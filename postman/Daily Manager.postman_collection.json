@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "1c33b570-b103-4ef3-ad2d-ab892a7ad2b3",
+		"name": "Daily Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1524269",
+		"_collection_link": "https://universal-rocket-301450.postman.co/workspace/Jtech-Microservices~98103a70-9002-4cd4-9067-33bfa021018a/collection/1524269-1c33b570-b103-4ef3-ad2d-ab892a7ad2b3?action=share&source=collection_link&creator=1524269"
+	},
+	"item": [
+		{
+			"name": "employee",
+			"item": [
+				{
+					"name": "[EMPLOYEE] Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Angelo Vicente Filho\",\n    \"username\": \"angelo.vicente\",\n    \"password\": \"mudar123\",\n    \"email\": \"angelo.vicente@veolia.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/v1/dailies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"v1",
+								"dailies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "daily",
+			"item": []
+		},
+		{
+			"name": "squad",
+			"item": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
