@@ -6,6 +6,7 @@ import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,6 +22,10 @@ public class Employee {
     private String username;
     private String password;
     private String email;
+
+    public static List<Employee> fromDocuments(List<EmployeeDocument> documents) {
+        return documents.stream().map(Employee::fromDocument).toList();
+    }
 
     public EmployeeDocument toDocument() {
         return EmployeeDocument.builder()
