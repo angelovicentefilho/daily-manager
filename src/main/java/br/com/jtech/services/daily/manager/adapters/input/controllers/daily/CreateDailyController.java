@@ -35,6 +35,7 @@ public class CreateDailyController {
 
     private final CreateDailyInputGateway createDailyInputGateway;
 
+    //TODO: Optional<Daily> is better!!!
     @PostMapping
     public ResponseEntity<DailyResponse> create(@RequestBody DailyRequest request) {
         var daily = fromDomain(createDailyInputGateway.create(fromRequest(request)));

@@ -33,4 +33,8 @@ public class EmployeeValidator {
     public static void checkUsername(String username) {
         hasText(username, "Username cannot be null!");
     }
+
+    public static void checkIdNotNull(UUID id) {
+        notNull(id, "ID user cannot be null for update!");
+    }
 }

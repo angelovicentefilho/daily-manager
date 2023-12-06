@@ -29,4 +29,11 @@ public class EmployeeResponse implements Serializable {
     public static EmployeeResponse fromDomain(Employee domain) {
         return null;
     }
+
+    public static EmployeeResponse fromDomains(List<Employee> employees) {
+        var list =  employees.stream().map(EmployeeResponse::fromDomain).toList();
+        return EmployeeResponse.builder()
+                .employees(list)
+                .build();
+    }
 }
