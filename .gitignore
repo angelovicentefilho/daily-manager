@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 logs/
+composer/storage/
 
 ### STS ###
 .apt_generated

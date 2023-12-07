@@ -16,13 +16,13 @@ import static br.com.jtech.services.daily.manager.application.core.domains.squad
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping("/api/v1/dailies")
+@RequestMapping("/api/v1/squads")
 @RequiredArgsConstructor
 public class CreateSquadController {
 
     private final CreateSquadInputGateway createSquadInputGateway;
 
-    @PostMapping("/squad")
+    @PostMapping
     public ResponseEntity<SquadResponse> create(@RequestBody @Valid SquadRequest request) {
         var domain = createSquadInputGateway.create(fromRequest(request));
         return ResponseEntity.status(CREATED).body(fromDomain(domain));
