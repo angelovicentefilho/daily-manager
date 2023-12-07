@@ -1,40 +1,36 @@
 package br.com.jtech.services.daily.manager.application.core.validators;
 
-import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
 import lombok.experimental.UtilityClass;
 
 import java.util.UUID;
 
-import static org.springframework.util.Assert.hasText;
-import static org.springframework.util.Assert.notNull;
-
 @UtilityClass
 public class EmployeeValidator {
-    public static void checkEmployee(Employee employee) {
-        notNull(employee, "Employee cannot be null!");
-        hasText(employee.getEmail(), "Employee email required!");
-        hasText(employee.getName(), "Name is required!");
-        hasText(employee.getPassword(), "Password required!");
-        hasText(employee.getUsername(), "Username required!");
+
+    public static void validateId(String id) {
+        checkNotNull(id, "ID cannot be null!");
+        validateUUID(id);
     }
 
-    public static void checkEmail(String email) {
-        hasText(email, "Employee email cannot be null!");
+    public static void validateIdNotNull(UUID id) {
+        checkNotNull(id, "ID user cannot be null for update!");
     }
 
-    public static void checkId(String id) {
-        try {
-            var uuid = UUID.fromString(id);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Id employee invalid!");
+    private static void checkNotNull(Object object, String errorMessage) {
+        if (object == null) {
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 
-    public static void checkUsername(String username) {
-        hasText(username, "Username cannot be null!");
+    private static void validateUUID(String id) {
+        try {
+            UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid employee ID!");
+        }
     }
 
-    public static void checkIdNotNull(UUID id) {
-        notNull(id, "ID user cannot be null for update!");
+    private static boolean isValidEmailFormat(String email) {
+        return email.contains("@");
     }
 }

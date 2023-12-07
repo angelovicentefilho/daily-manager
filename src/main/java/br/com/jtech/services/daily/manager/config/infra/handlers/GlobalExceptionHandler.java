@@ -12,8 +12,10 @@
 package br.com.jtech.services.daily.manager.config.infra.handlers;
 
 
-
-import br.com.jtech.services.daily.manager.config.infra.exceptions.*;
+import br.com.jtech.services.daily.manager.application.core.exceptions.employee.EmployeeBadRequestException;
+import br.com.jtech.services.daily.manager.config.infra.exceptions.ApiError;
+import br.com.jtech.services.daily.manager.config.infra.exceptions.ApiSubError;
+import br.com.jtech.services.daily.manager.config.infra.exceptions.ApiValidationError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -47,6 +49,14 @@ public class GlobalExceptionHandler {
         error.setTimestamp(LocalDateTime.now());
         error.setSubErrors(subErrors(ex));
         error.setDebugMessage(ex.getLocalizedMessage());
+        return buildResponseEntity(error);
+    }
+
+    @ExceptionHandler(EmployeeBadRequestException.class)
+    public ResponseEntity<ApiError> handlerBadRequestByPassword(EmployeeBadRequestException exception) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST);
+        error.setMessage(exception.getMessage());
+        error.setTimestamp(LocalDateTime.now());
         return buildResponseEntity(error);
     }
 

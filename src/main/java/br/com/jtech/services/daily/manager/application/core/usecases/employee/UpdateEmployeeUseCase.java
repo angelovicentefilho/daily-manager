@@ -4,7 +4,7 @@ import br.com.jtech.services.daily.manager.application.core.domains.employee.Emp
 import br.com.jtech.services.daily.manager.application.ports.input.employee.UpdateEmployeeInputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.employee.UpdateEmployeeOuputGateway;
 
-import static br.com.jtech.services.daily.manager.application.core.validators.EmployeeValidator.checkIdNotNull;
+import static br.com.jtech.services.daily.manager.application.core.validators.EmployeeValidator.validateIdNotNull;
 
 public class UpdateEmployeeUseCase implements UpdateEmployeeInputGateway {
 
@@ -16,7 +16,7 @@ public class UpdateEmployeeUseCase implements UpdateEmployeeInputGateway {
 
     @Override
     public Employee update(Employee domain) {
-        checkIdNotNull(domain.getId());
+        validateIdNotNull(domain.getId());
         return updateEmployeeOuputGateway.update(domain);
     }
 }

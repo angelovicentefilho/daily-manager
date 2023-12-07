@@ -7,7 +7,7 @@ import br.com.jtech.services.daily.manager.application.ports.output.employee.Fin
 import br.com.jtech.services.daily.manager.application.ports.output.employee.FindEmployeeByUsernameOutputGateway;
 import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
 
-import static br.com.jtech.services.daily.manager.application.core.validators.EmployeeValidator.*;
+import static br.com.jtech.services.daily.manager.application.core.validators.EmployeeValidator.validateId;
 
 public class DeleteEmployeeUseCase implements DeleteEmployeeInputGateway {
 
@@ -29,21 +29,19 @@ public class DeleteEmployeeUseCase implements DeleteEmployeeInputGateway {
 
     @Override
     public void deleteByEmail(String email) {
-        checkEmail(email);
         var employee = findEmployeeByEmailOutputGateway.findByEmail(email);
         deleteEmployeeOuputGateway.deleteById(employee.getId());
     }
 
     @Override
     public void deleteById(String id) {
-        checkId(id);
+        validateId(id);
         var employee = findEmployeeByIdOutputGateway.findById(GenId.newUuid(id));
         deleteEmployeeOuputGateway.deleteById(employee.getId());
     }
 
     @Override
     public void deleteByUsername(String username) {
-        checkUsername(username);
         var employee = findEmployeeByUsernameOutputGateway.findByUsername(username);
         deleteEmployeeOuputGateway.deleteById(employee.getId());
     }
