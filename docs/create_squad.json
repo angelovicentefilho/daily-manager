@@ -1,0 +1,7 @@
+{
+  "name": "Squad 1",
+  "description": "Squad Description",
+  "members": [],
+  "maxCapacity": 5,
+  "isPublic": true
+}
