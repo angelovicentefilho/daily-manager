@@ -19,7 +19,6 @@ import java.util.UUID;
 /**
  * class GenId
  *
- * @author: angelo.vicente@jtech.corp
  */
 @UtilityClass
 public class GenId {
@@ -34,5 +33,9 @@ public class GenId {
 
     public static UUID newUuid(String id) {
         return (id != null && !id.isEmpty()) ? UUID.fromString(id) : UUID.randomUUID();
+    }
+
+    public static UUID newUuid() {
+        return UUID.randomUUID();
     }
 }

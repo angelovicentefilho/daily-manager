@@ -55,11 +55,11 @@ public class Daily {
     public DailyDocument toDocument() {
         return DailyDocument.builder()
                 .id(getId())
-                .author(EmployeeDocument.fromDomain(getAuthor()))
-                .squad(SquadDocument.fromDomain(getSquad()))
+                .author(getAuthor().toDocument())
+                .squad(getSquad().toDocument())
                 .createdAt(getCreatedAt())
-                .tasks(TaskDocument.fromDomains(getTasks()))
-                .blockers(BlockerDocument.fromDomains(getBlockers()))
+                .tasks(Task.toDocuments(getTasks()))
+                .blockers(Blocker.toDocuments(getBlockers()))
                 .build();
     }
 

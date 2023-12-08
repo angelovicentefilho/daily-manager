@@ -39,7 +39,6 @@ import java.util.Objects;
 /**
 * class Jsons
 *
-* user angelo.vicente@jtech.corp
 */
 @Slf4j
 @UtilityClass

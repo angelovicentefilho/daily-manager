@@ -36,4 +36,8 @@ public class Blocker {
     public static List<Blocker> fromRequest(List<BlockerRequest> blockers) {
         return null;
     }
+
+    public static List<BlockerDocument> toDocuments(List<Blocker> blockers) {
+        return null;
+    }
 }

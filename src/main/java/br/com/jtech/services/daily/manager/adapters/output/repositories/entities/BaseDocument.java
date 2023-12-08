@@ -1,9 +1,6 @@
 package br.com.jtech.services.daily.manager.adapters.output.repositories.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -20,6 +17,7 @@ import java.util.UUID;
 @Setter
 @Document
 @SuperBuilder
+@EqualsAndHashCode(exclude = {"createdAt", "updatedAt", "version"})
 public class BaseDocument {
     @Id
     private UUID id;

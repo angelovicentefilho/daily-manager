@@ -33,4 +33,8 @@ public class Task {
     public static List<Task> fromRequest(List<TaskRequest> tasks) {
         return null;
     }
+
+    public static List<TaskDocument> toDocuments(List<Task> tasks) {
+        return null;
+    }
 }

@@ -29,4 +29,8 @@ public class Squad {
     public static Squad fromRequest(SquadRequest squad) {
         return null;
     }
+
+    public SquadDocument toDocument() {
+        return null;
+    }
 }

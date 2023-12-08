@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,7 +28,10 @@ public class EmployeeResponse implements Serializable {
     private List<EmployeeResponse> employees;
 
     public static EmployeeResponse fromDomain(Employee domain) {
-        return null;
+        var response = new EmployeeResponse();
+        BeanUtils.copyProperties(domain, response);
+        response.setId(domain.getId().toString());
+        return response;
     }
 
     public static EmployeeResponse fromDomains(List<Employee> employees) {
