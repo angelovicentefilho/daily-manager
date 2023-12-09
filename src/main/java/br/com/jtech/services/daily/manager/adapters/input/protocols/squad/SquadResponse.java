@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -29,6 +30,16 @@ public class SquadResponse implements Serializable {
     private List<SquadResponse> squads;
 
     public static SquadResponse fromDomain(Squad domain) {
-        return null;
+        var response = new SquadResponse();
+        BeanUtils.copyProperties(domain, response);
+        response.setId(domain.getId().toString());
+        return response;
+    }
+
+    public static SquadResponse fromDomains(List<Squad> squads) {
+        var list =  squads.stream().map(SquadResponse::fromDomain).toList();
+        return SquadResponse.builder()
+                .squads(list)
+                .build();
     }
 }

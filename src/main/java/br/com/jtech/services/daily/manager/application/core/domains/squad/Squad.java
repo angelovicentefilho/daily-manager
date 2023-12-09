@@ -34,6 +34,10 @@ public class Squad {
         return squad;
     }
 
+    public static List<Squad> fromDocuments(List<SquadDocument> documents) {
+        return documents.stream().map(Squad::fromDocument).toList();
+    }
+
     public static Squad fromRequest(SquadRequest request) {
         var squad = new Squad();
         BeanUtils.copyProperties(request, squad);
