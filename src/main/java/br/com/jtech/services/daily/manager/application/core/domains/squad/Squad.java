@@ -51,8 +51,4 @@ public class Squad {
                 isPublic(getIsPublic()).
                 build();
     }
-
-    public SquadDocument toDocument() {
-        return null;
-    }
 }
