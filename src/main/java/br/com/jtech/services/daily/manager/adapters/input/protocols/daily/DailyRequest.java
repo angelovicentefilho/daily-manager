@@ -41,6 +41,7 @@ public class DailyRequest implements Serializable {
     private SquadRequest squad;
     @NotNull(message = "Daily author cannot be null!")
     private EmployeeRequest author;
+    private String summary;
     private LocalDateTime createdAt;
     private List<TaskRequest> tasks;
     private List<BlockerRequest> blockers;

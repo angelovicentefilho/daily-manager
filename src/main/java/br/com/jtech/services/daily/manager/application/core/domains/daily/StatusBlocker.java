@@ -7,7 +7,7 @@ public enum StatusBlocker {
     IN_PROGRESS,
     RESOLVED;
 
-    public static StatusBlocker getStatus(String status) {
+    public static StatusBlocker of(String status) {
         return Arrays.stream(StatusBlocker.values())
                 .filter(statusBlocker -> status.equalsIgnoreCase(statusBlocker.toString()))
                 .findFirst()

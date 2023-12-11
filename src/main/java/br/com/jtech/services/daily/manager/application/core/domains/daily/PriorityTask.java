@@ -6,7 +6,7 @@ public enum PriorityTask {
     HIGH,
     MEDIUM, LOW_PRIORITY;
 
-    public static PriorityTask getPriority(String priority) {
+    public static PriorityTask of(String priority) {
         return Arrays.stream(PriorityTask.values())
                 .filter(priorityTask -> priority.equalsIgnoreCase(priorityTask.toString()))
                 .findFirst()

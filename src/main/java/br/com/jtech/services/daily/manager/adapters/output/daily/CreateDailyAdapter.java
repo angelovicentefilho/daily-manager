@@ -18,7 +18,10 @@ import br.com.jtech.services.daily.manager.application.ports.output.daily.Create
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static br.com.jtech.services.daily.manager.application.core.domains.daily.Daily.fromDocument;
+import static java.util.Optional.of;
 
 /**
  * class ManagerAdapter
@@ -32,8 +35,8 @@ public class CreateDailyAdapter implements CreateDailyOutputGateway {
     private final DailyRepository repository;
 
     @Override
-    public Daily create(Daily daily) {
-        return fromDocument(this.repository.save(daily.toDocument()));
+    public Optional<Daily> create(Daily daily) {
+        return of(fromDocument(this.repository.save(daily.toDocument())));
     }
 
 }

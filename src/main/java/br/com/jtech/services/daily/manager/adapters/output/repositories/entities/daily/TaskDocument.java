@@ -1,6 +1,7 @@
 package br.com.jtech.services.daily.manager.adapters.output.repositories.entities.daily;
 
 import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.BaseDocument;
+import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.employee.EmployeeDocument;
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
 import br.com.jtech.services.daily.manager.application.core.domains.daily.Task;
 import br.com.jtech.services.daily.manager.config.infra.mongo.Cascade;
@@ -32,7 +33,7 @@ public class TaskDocument extends BaseDocument implements Serializable {
     private LocalDate dueDate;
     @DBRef
     @Cascade
-    private Employee assignee;
+    private EmployeeDocument assignee;
     private String notes;
 
     public static List<TaskDocument> fromDomains(List<Task> tasks) {
