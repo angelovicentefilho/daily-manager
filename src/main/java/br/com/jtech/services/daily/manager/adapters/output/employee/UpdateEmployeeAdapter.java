@@ -6,6 +6,8 @@ import br.com.jtech.services.daily.manager.application.ports.output.employee.Upd
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static br.com.jtech.services.daily.manager.application.core.domains.employee.Employee.fromDocument;
 
 @Service
@@ -15,7 +17,7 @@ public class UpdateEmployeeAdapter implements UpdateEmployeeOuputGateway {
     private final EmployeeRepository repository;
 
     @Override
-    public Employee update(Employee employee) {
-        return fromDocument(repository.save(employee.toDocument()));
+    public Optional<Employee> update(Employee employee) {
+        return Optional.of(fromDocument(repository.save(employee.toDocument())));
     }
 }

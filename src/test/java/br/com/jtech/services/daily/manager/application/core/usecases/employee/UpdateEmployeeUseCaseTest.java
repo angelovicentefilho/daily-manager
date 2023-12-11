@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,9 +37,10 @@ class UpdateEmployeeUseCaseTest {
                 .password("password123")
                 .email("john.doe@example.com")
                 .build();
-        when(updateEmployeeOuputGateway.update(employee)).thenReturn(employee);
-        Employee updatedEmployee = updateEmployeeUseCase.update(employee);
-        assertEquals(employee, updatedEmployee);
+        when(updateEmployeeOuputGateway.update(employee)).thenReturn(Optional.of(employee));
+        Optional<Employee> updatedEmployee = updateEmployeeUseCase.update(employee);
+        assertTrue(updatedEmployee.isPresent());
+        assertEquals(employee, updatedEmployee.get());
         verify(updateEmployeeOuputGateway).update(employee);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import static br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeResponse.fromDomain;
+import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RequiredArgsConstructor
@@ -19,7 +20,8 @@ public class FindEmployeeByUsernameController {
 
     @GetMapping("/username/{username}")
     public ResponseEntity<EmployeeResponse> findByUsername(@PathVariable String username) {
-        var employee = findEmployeeByUsernameOutputGateway.findByUsername(username);
-        return ok(fromDomain(employee));
+        return findEmployeeByUsernameOutputGateway.findByUsername(username)
+                .map(employee -> ok(fromDomain(employee)))
+                .orElseGet(() -> notFound().build());
     }
 }

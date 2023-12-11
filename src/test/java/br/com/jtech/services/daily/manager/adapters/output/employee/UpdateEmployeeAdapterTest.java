@@ -8,9 +8,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 
@@ -35,14 +37,15 @@ public class UpdateEmployeeAdapterTest {
 
         Mockito.when(repository.save(any())).thenReturn(mockEmployee.toDocument());
 
-        Employee updatedEmployee = updateEmployeeAdapter.update(mockEmployee);
+        Optional<Employee> updatedEmployee = updateEmployeeAdapter.update(mockEmployee);
 
         Mockito.verify(repository, times(1)).save(any());
 
-        assertEquals(mockEmployee.getId(), updatedEmployee.getId());
-        assertEquals(mockEmployee.getName(), updatedEmployee.getName());
-        assertEquals(mockEmployee.getUsername(), updatedEmployee.getUsername());
-        assertEquals(mockEmployee.getPassword(), updatedEmployee.getPassword());
-        assertEquals(mockEmployee.getEmail(), updatedEmployee.getEmail());
+        assertTrue(updatedEmployee.isPresent());
+        assertEquals(mockEmployee.getId(), updatedEmployee.get().getId());
+        assertEquals(mockEmployee.getName(), updatedEmployee.get().getName());
+        assertEquals(mockEmployee.getUsername(), updatedEmployee.get().getUsername());
+        assertEquals(mockEmployee.getPassword(), updatedEmployee.get().getPassword());
+        assertEquals(mockEmployee.getEmail(), updatedEmployee.get().getEmail());
     }
 }

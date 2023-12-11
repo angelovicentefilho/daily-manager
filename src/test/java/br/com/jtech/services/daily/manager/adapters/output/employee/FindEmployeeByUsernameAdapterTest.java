@@ -12,8 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class FindEmployeeByUsernameAdapterTest {
@@ -37,12 +36,11 @@ public class FindEmployeeByUsernameAdapterTest {
                 .build();
 
         Mockito.when(repository.findByUsername(username)).thenReturn(Optional.of(mockEmployee.toDocument()));
-
-        Employee foundEmployee = findEmployeeByUsernameAdapter.findByUsername(username);
-
+        Optional<Employee> foundEmployee = findEmployeeByUsernameAdapter.findByUsername(username);
         Mockito.verify(repository, Mockito.times(1)).findByUsername(username);
 
-        assertEquals(username, foundEmployee.getUsername());
+        assertTrue(foundEmployee.isPresent());
+        assertEquals(username, foundEmployee.get().getUsername());
     }
 
     @Test

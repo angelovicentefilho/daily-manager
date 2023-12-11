@@ -7,6 +7,8 @@ import br.com.jtech.services.daily.manager.application.ports.output.employee.Fin
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static br.com.jtech.services.daily.manager.application.core.domains.employee.Employee.fromDocument;
 
 @Component
@@ -16,8 +18,8 @@ public class FindEmployeeByEmailAdapter implements FindEmployeeByEmailOutputGate
     private final EmployeeRepository repository;
 
     @Override
-    public Employee findByEmail(String email) {
-        return fromDocument(repository.findByEmail(email)
-                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!")));
+    public Optional<Employee> findByEmail(String email) {
+        return Optional.of(fromDocument(repository.findByEmail(email)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!"))));
     }
 }

@@ -4,16 +4,12 @@ import br.com.jtech.services.daily.manager.adapters.input.protocols.employee.Emp
 import br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeResponse;
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
 import br.com.jtech.services.daily.manager.application.ports.input.employee.CreateEmployeeInputGateway;
+import br.com.jtech.services.daily.manager.config.infra.utils.Https;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import static br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeResponse.fromDomain;
-import static org.springframework.http.HttpStatus.CREATED;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/dailies")
@@ -23,9 +19,12 @@ public class CreateEmployeeController {
     private final CreateEmployeeInputGateway createEmployeeInputGateway;
 
     @PostMapping("/employee")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<EmployeeResponse> create(@RequestBody @Valid EmployeeRequest request) {
-        var domain = createEmployeeInputGateway.create(Employee.fromRequest(request));
-        return ResponseEntity.status(CREATED).body(fromDomain(domain));
+        return createEmployeeInputGateway.create(Employee.fromRequest(request))
+                .map(EmployeeResponse::fromDomain)
+                .map(Https::CREATED)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

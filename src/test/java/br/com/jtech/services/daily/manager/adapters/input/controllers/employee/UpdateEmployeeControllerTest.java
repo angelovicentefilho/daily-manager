@@ -17,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +52,7 @@ public class UpdateEmployeeControllerTest {
                 .email("johndoe@example.com")
                 .build();
 
-        Mockito.when(updateEmployeeInputGateway.update(Mockito.any())).thenReturn(Employee.fromRequest(request));
+        Mockito.when(updateEmployeeInputGateway.update(Mockito.any())).thenReturn(Optional.of(Employee.fromRequest(request)));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/dailies/employees/{id}", ID.toString())
                         .contentType(MediaType.APPLICATION_JSON)

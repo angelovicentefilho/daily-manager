@@ -30,20 +30,20 @@ public class DeleteEmployeeUseCase implements DeleteEmployeeInputGateway {
     @Override
     public void deleteByEmail(String email) {
         var employee = findEmployeeByEmailOutputGateway.findByEmail(email);
-        deleteEmployeeOuputGateway.deleteById(employee.getId());
+        employee.ifPresent(value -> deleteEmployeeOuputGateway.deleteById(value.getId()));
     }
 
     @Override
     public void deleteById(String id) {
         validateId(id);
         var employee = findEmployeeByIdOutputGateway.findById(GenId.newUuid(id));
-        deleteEmployeeOuputGateway.deleteById(employee.getId());
+        employee.ifPresent(value -> deleteEmployeeOuputGateway.deleteById(value.getId()));
     }
 
     @Override
     public void deleteByUsername(String username) {
         var employee = findEmployeeByUsernameOutputGateway.findByUsername(username);
-        deleteEmployeeOuputGateway.deleteById(employee.getId());
+        employee.ifPresent(value -> deleteEmployeeOuputGateway.deleteById(value.getId()));
     }
 
     @Override

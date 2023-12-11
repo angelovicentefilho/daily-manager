@@ -7,6 +7,8 @@ import br.com.jtech.services.daily.manager.application.ports.output.employee.Fin
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class FindEmployeeByUsernameAdapter implements FindEmployeeByUsernameOutputGateway {
@@ -14,8 +16,8 @@ public class FindEmployeeByUsernameAdapter implements FindEmployeeByUsernameOutp
     private final EmployeeRepository repository;
 
     @Override
-    public Employee findByUsername(String username) {
-        return Employee.fromDocument(this.repository.findByUsername(username)
-                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!")));
+    public Optional<Employee> findByUsername(String username) {
+        return Optional.of(Employee.fromDocument(this.repository.findByUsername(username)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!"))));
     }
 }

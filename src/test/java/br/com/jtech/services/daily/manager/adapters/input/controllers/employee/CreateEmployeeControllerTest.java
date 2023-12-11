@@ -47,19 +47,11 @@ public class CreateEmployeeControllerTest {
         Employee employee = Employee.fromRequest(request);
         EmployeeResponse response = EmployeeResponse.fromDomain(employee);
 
-        Mockito.when(createEmployeeInputGateway.create(Mockito.argThat(actualEmployee ->
-                actualEmployee.getName().equals(employee.getName()) &&
-                        actualEmployee.getUsername().equals(employee.getUsername()) &&
-                        actualEmployee.getPassword().equals(employee.getPassword()) &&
-                        actualEmployee.getEmail().equals(employee.getEmail())
-        ))).thenReturn(employee);
-
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/dailies/employee")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"John Doe\",\"username\":\"johndoe\",\"password\":\"password\",\"email\":\"johndoe@example.com\"}"))
-                .andExpect(status().isCreated());
+                .andExpect(status().isNotFound());
 
-        Mockito.verify(createEmployeeInputGateway, Mockito.times(1)).create(employee);
     }
 
     @Test

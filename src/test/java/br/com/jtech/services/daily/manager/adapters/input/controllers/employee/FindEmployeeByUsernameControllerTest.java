@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
@@ -33,17 +34,17 @@ public class FindEmployeeByUsernameControllerTest {
     public void testFindByUsernameWhenEmployeeExistsThenReturnEmployee() throws Exception {
         // Arrange
         String username = "johndoe";
-        Employee employee = new Employee(UUID.randomUUID(), "John Doe", username, "password123", "john.doe@example.com");
+        Optional<Employee> employee = Optional.of(new Employee(UUID.randomUUID(), "John Doe", username, "password123", "john.doe@example.com"));
         when(findEmployeeByUsernameOutputGateway.findByUsername(username)).thenReturn(employee);
 
         // Act & Assert
         mockMvc.perform(get("/api/v1/dailies/employees/username/{username}", username)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(employee.getId())))
-                .andExpect(jsonPath("$.name", is(employee.getName())))
-                .andExpect(jsonPath("$.username", is(employee.getUsername())))
-                .andExpect(jsonPath("$.email", is(employee.getEmail())));
+                .andExpect(jsonPath("$.id", is(employee.get().getId())))
+                .andExpect(jsonPath("$.name", is(employee.get().getName())))
+                .andExpect(jsonPath("$.username", is(employee.get().getUsername())))
+                .andExpect(jsonPath("$.email", is(employee.get().getEmail())));
     }
 
     @Test

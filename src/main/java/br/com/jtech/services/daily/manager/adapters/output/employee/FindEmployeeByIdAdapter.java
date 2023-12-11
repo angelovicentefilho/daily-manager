@@ -7,6 +7,7 @@ import br.com.jtech.services.daily.manager.application.ports.output.employee.Fin
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static br.com.jtech.services.daily.manager.application.core.domains.employee.Employee.fromDocument;
@@ -18,8 +19,8 @@ public class FindEmployeeByIdAdapter implements FindEmployeeByIdOutputGateway {
     private EmployeeRepository repository;
 
     @Override
-    public Employee findById(UUID uuid) {
-        return fromDocument(this.repository.findById(uuid)
-                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!")));
+    public Optional<Employee> findById(UUID uuid) {
+        return Optional.of(fromDocument(this.repository.findById(uuid)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!"))));
     }
 }

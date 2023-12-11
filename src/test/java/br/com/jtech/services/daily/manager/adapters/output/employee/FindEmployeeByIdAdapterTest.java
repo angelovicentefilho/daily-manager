@@ -12,8 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class FindEmployeeByIdAdapterTest {
@@ -42,15 +41,15 @@ public class FindEmployeeByIdAdapterTest {
 
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(mockEmployee.toDocument()));
 
-        Employee foundEmployee = findEmployeeByIdAdapter.findById(id);
+        Optional<Employee> foundEmployee = findEmployeeByIdAdapter.findById(id);
 
         Mockito.verify(repository, Mockito.times(1)).findById(id);
-
-        assertEquals(id, foundEmployee.getId());
-        assertEquals(name, foundEmployee.getName());
-        assertEquals(username, foundEmployee.getUsername());
-        assertEquals(password, foundEmployee.getPassword());
-        assertEquals(email, foundEmployee.getEmail());
+        assertTrue(foundEmployee.isPresent());
+        assertEquals(id, foundEmployee.get().getId());
+        assertEquals(name, foundEmployee.get().getName());
+        assertEquals(username, foundEmployee.get().getUsername());
+        assertEquals(password, foundEmployee.get().getPassword());
+        assertEquals(email, foundEmployee.get().getEmail());
     }
 
     @Test

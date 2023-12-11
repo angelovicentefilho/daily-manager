@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,7 +44,7 @@ class DeleteEmployeeUseCaseTest {
 
     @Test
     void testDeleteByEmailWhenEmployeeIsFoundThenDeleteSuccessfully() {
-        when(findEmployeeByEmailOutputGateway.findByEmail(any(String.class))).thenReturn(employee);
+        when(findEmployeeByEmailOutputGateway.findByEmail(any(String.class))).thenReturn(Optional.of(employee));
         deleteEmployeeUseCase.deleteByEmail(employee.getEmail());
         verify(deleteEmployeeOuputGateway).deleteById(employee.getId());
     }
@@ -59,7 +60,7 @@ class DeleteEmployeeUseCaseTest {
 
     @Test
     void testDeleteByIdWhenEmployeeIsFoundThenDeleteSuccessfully() {
-        when(findEmployeeByIdOutputGateway.findById(any(UUID.class))).thenReturn(employee);
+        when(findEmployeeByIdOutputGateway.findById(any(UUID.class))).thenReturn(Optional.of(employee));
         deleteEmployeeUseCase.deleteById(employee.getId().toString());
         verify(deleteEmployeeOuputGateway).deleteById(employee.getId());
     }
@@ -74,7 +75,7 @@ class DeleteEmployeeUseCaseTest {
 
     @Test
     void testDeleteByUsernameWhenEmployeeIsFoundThenDeleteSuccessfully() {
-        when(findEmployeeByUsernameOutputGateway.findByUsername(any(String.class))).thenReturn(employee);
+        when(findEmployeeByUsernameOutputGateway.findByUsername(any(String.class))).thenReturn(Optional.of(employee));
         deleteEmployeeUseCase.deleteByUsername(employee.getUsername());
         verify(deleteEmployeeOuputGateway).deleteById(employee.getId());
     }

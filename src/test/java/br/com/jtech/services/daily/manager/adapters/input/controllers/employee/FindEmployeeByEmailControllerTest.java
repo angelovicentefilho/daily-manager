@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,7 +41,7 @@ public class FindEmployeeByEmailControllerTest {
                 .email(email)
                 .build();
 
-        Mockito.when(findEmployeeByEmailOutputGateway.findByEmail(email)).thenReturn(employee);
+        Mockito.when(findEmployeeByEmailOutputGateway.findByEmail(email)).thenReturn(Optional.of(employee));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/dailies/employees/{email}", email)
                         .contentType(MediaType.APPLICATION_JSON))

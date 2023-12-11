@@ -18,8 +18,7 @@ public class FindAllEmployeesController {
 
     @GetMapping
     public ResponseEntity<EmployeeResponse> findAll() {
-        var employees = findAllEmployeesOutputGateway.findAll();
-        return ok(fromDomains(employees));
+        return ok(fromDomains(findAllEmployeesOutputGateway.findAll()));
     }
 
 }

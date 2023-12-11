@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,9 +36,10 @@ class CreateEmployeeUseCaseTest {
                 .email("john.doe@example.com")
                 .build();
 
-        when(createEmployeeOutputGateway.create(employee)).thenReturn(employee);
-        Employee createdEmployee = createEmployeeUseCase.create(employee);
-        assertEquals(employee, createdEmployee);
+        when(createEmployeeOutputGateway.create(employee)).thenReturn(Optional.of(employee));
+        Optional<Employee> createdEmployee = createEmployeeUseCase.create(employee);
+        assertTrue(createdEmployee.isPresent());
+        assertEquals(employee, createdEmployee.get());
         verify(createEmployeeOutputGateway).create(employee);
     }
 
@@ -46,10 +48,11 @@ class CreateEmployeeUseCaseTest {
         CreateEmployeeOutputGateway outputGateway = mock(CreateEmployeeOutputGateway.class);
         CreateEmployeeUseCase createEmployeeUseCase = new CreateEmployeeUseCase(outputGateway);
         Employee employee = new Employee();
-        when(outputGateway.create(employee)).thenReturn(employee);
-        Employee createdEmployee = createEmployeeUseCase.create(employee);
+        when(outputGateway.create(employee)).thenReturn(Optional.of(employee));
+        Optional<Employee> createdEmployee = createEmployeeUseCase.create(employee);
         verify(outputGateway, times(1)).create(employee);
-        assertEquals(employee, createdEmployee);
+        assertTrue(createdEmployee.isPresent());
+        assertEquals(employee, createdEmployee.get());
     }
 
 

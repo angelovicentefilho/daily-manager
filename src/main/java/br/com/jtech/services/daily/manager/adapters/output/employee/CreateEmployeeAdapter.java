@@ -6,6 +6,8 @@ import br.com.jtech.services.daily.manager.application.ports.output.employee.Cre
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 
 @Component
 @RequiredArgsConstructor
@@ -14,8 +16,7 @@ public class CreateEmployeeAdapter implements CreateEmployeeOutputGateway {
     private final EmployeeRepository repository;
 
     @Override
-    public Employee create(Employee employee) {
-        var document = this.repository.save(employee.toDocument());
-        return Employee.fromDocument(document);
+    public Optional<Employee> create(Employee employee) {
+        return Optional.of(Employee.fromDocument(this.repository.save(employee.toDocument())));
     }
 }

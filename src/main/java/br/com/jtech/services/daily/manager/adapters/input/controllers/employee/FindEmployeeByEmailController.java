@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import static br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeResponse.fromDomain;
-import static org.springframework.http.ResponseEntity.ok;
 
 @RequiredArgsConstructor
 @JtechRestController(value = "/api/v1/dailies/employees")
@@ -19,8 +18,9 @@ public class FindEmployeeByEmailController {
 
     @GetMapping("/{email}")
     public ResponseEntity<EmployeeResponse> findByEmail(@PathVariable String email) {
-        var employee = findEmployeeByEmailOutputGateway.findByEmail(email);
-        return ok(fromDomain(employee));
+        return findEmployeeByEmailOutputGateway.findByEmail(email)
+                .map(employee -> ResponseEntity.ok(fromDomain(employee)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

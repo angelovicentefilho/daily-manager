@@ -4,6 +4,8 @@ import br.com.jtech.services.daily.manager.application.core.domains.employee.Emp
 import br.com.jtech.services.daily.manager.application.ports.input.employee.UpdateEmployeeInputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.employee.UpdateEmployeeOuputGateway;
 
+import java.util.Optional;
+
 import static br.com.jtech.services.daily.manager.application.core.validators.EmployeeValidator.validateIdNotNull;
 
 public class UpdateEmployeeUseCase implements UpdateEmployeeInputGateway {
@@ -15,7 +17,7 @@ public class UpdateEmployeeUseCase implements UpdateEmployeeInputGateway {
     }
 
     @Override
-    public Employee update(Employee domain) {
+    public Optional<Employee> update(Employee domain) {
         validateIdNotNull(domain.getId());
         return updateEmployeeOuputGateway.update(domain);
     }
