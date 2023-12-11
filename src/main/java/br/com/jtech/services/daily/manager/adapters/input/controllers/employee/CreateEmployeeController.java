@@ -24,7 +24,7 @@ public class CreateEmployeeController {
         return createEmployeeInputGateway.create(Employee.fromRequest(request))
                 .map(EmployeeResponse::fromDomain)
                 .map(Https::CREATED)
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.badRequest().build());
     }
 
 }
