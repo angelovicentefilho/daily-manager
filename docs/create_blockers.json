@@ -1,0 +1,25 @@
+{
+  "id": "180f6628-dbb9-49ae-bd30-ceb9106c43b5",
+  "description": "Wrong pre analysis!",
+  "resolution": "Re analysis, and call with system analyst.",
+  "impact": "If dont do it, generate bugs!",
+  "owner": {
+    "name": "Angelo Vicente Filho",
+    "username": "angelo.vicente",
+    "password": "xxxxxx",
+    "email": "angelo.vicente@veolia.com"
+  },
+  "status": "IN_PROGRESS",
+  "createdAt": "2023-12-11 11:11:00",
+  "updatedAt": "2023-12-12 09:10:56",
+  "timeEstimative": "2024-01-05 11:30:00",
+  "labels": [
+    "analysis",
+    "code-review",
+    "pull-request"
+  ],
+  "links": [
+    "#223412",
+    "#66531"
+  ]
+}

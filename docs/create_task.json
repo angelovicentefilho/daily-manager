@@ -1,0 +1,15 @@
+{
+  "id": "358680b5-551e-4623-b41e-c1d3ca34a5b8",
+  "title": "CodeReview - Pull Request",
+  "description": "Verify bugs from develop code",
+  "status": "PENDING",
+  "priority": "HIGH",
+  "dueDate": "2023-12-12",
+  "assignee": {
+    "name": "Angelo Vicente Filho",
+    "username": "angelo.vicente",
+    "password": "xxxxxx",
+    "email": "angelo.vicente@veolia.com"
+  },
+  "notes": "Major priority"
+}

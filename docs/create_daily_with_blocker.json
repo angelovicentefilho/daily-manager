@@ -1,0 +1,74 @@
+{
+  "id": "37e18936-709e-40b7-a17d-6932b181696c",
+  "squad": {
+    "name": "Squad 1",
+    "description": "Squad Description",
+    "members": [
+      {
+        "name": "John Doe",
+        "username": "john.doe",
+        "password": "xxxxxx",
+        "email": "john.due@example.com"
+      },
+      {
+        "name": "Angelo Vicente Filho",
+        "username": "angelo.vicente",
+        "password": "xxxxxx",
+        "email": "angelo.vicente@veolia.com"
+      }
+    ],
+    "maxCapacity": 5,
+    "isPublic": true
+  },
+  "author": {
+    "name": "Angelo Vicente Filho",
+    "username": "angelo.vicente",
+    "password": "xxxxxx",
+    "email": "angelo.vicente@veolia.com"
+  },
+  "createdAt": "2023-12-12 11:30:00",
+  "tasks": [
+    {
+      "id": "358680b5-551e-4623-b41e-c1d3ca34a5b8",
+      "title": "CodeReview - Pull Request",
+      "description": "Verify bugs from develop code",
+      "status": "PENDING",
+      "priority": "HIGH",
+      "dueDate": "2023-12-12",
+      "assignee": {
+        "name": "Angelo Vicente Filho",
+        "username": "angelo.vicente",
+        "password": "xxxxxx",
+        "email": "angelo.vicente@veolia.com"
+      },
+      "notes": "Major priority"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "180f6628-dbb9-49ae-bd30-ceb9106c43b5",
+      "description": "Wrong pre analysis!",
+      "resolution": "Re analysis, and call with system analyst.",
+      "impact": "If dont do it, generate bugs!",
+      "owner": {
+        "name": "Angelo Vicente Filho",
+        "username": "angelo.vicente",
+        "password": "xxxxxx",
+        "email": "angelo.vicente@veolia.com"
+      },
+      "status": "IN_PROGRESS",
+      "createdAt": "2023-12-11 11:11:00",
+      "updatedAt": "2023-12-12 09:10:56",
+      "timeEstimative": "2024-01-05 11:30:00",
+      "labels": [
+        "analysis",
+        "code-review",
+        "pull-request"
+      ],
+      "links": [
+        "#223412",
+        "#66531"
+      ]
+    }
+  ]
+}
