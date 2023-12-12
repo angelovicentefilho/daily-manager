@@ -11,7 +11,7 @@ import static br.com.jtech.services.daily.manager.adapters.input.protocols.emplo
 import static org.springframework.http.ResponseEntity.ok;
 
 @RequiredArgsConstructor
-@JtechRestController(value = "/api/v1/dailies/employees")
+@JtechRestController(value = "/api/v1/employees")
 public class FindAllEmployeesController {
 
     private final FindAllEmployeesOutputGateway findAllEmployeesOutputGateway;

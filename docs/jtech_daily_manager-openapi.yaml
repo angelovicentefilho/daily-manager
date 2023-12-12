@@ -1,0 +1,644 @@
+openapi: "3.0.3"
+info:
+  title: "Jtech Daily Manager API"
+  description: "API for manager daily tasks and blockers."
+  version: "1.0.0"
+  termsOfService: "www.jtech.com.br/terms-and-condition"
+  contact:
+    name: "Jtech Solucoes em Informatica"
+    email: "angelo.vicente@veolia.com, filipe.soares@veolia.com"
+servers:
+  - url: "https://dailymanager.jtech.com.br"
+    description: "Production"
+  - url: "http://localhost:8080"
+    description: "Development"
+components:
+  schemas:
+    ApiError:
+      readOnly: true
+      required:
+        - status
+        - timestamp
+        - message
+      type: object
+      properties:
+        status:
+          type: "integer"
+          format: int32
+          example: 400
+        timestamp:
+          type: "string"
+          pattern: "yyyy-MM-dd HH:mm:ss"
+          example: "2023-01-01 12:12:12"
+        message:
+          type: "string"
+          example: "Username cannot be empty!"
+        debugMessage:
+          type: "string"
+          example: "printStackTrace (only development)"
+        subErrors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApiSubError"
+
+    ApiSubError:
+      readOnly: true
+      type: "object"
+      properties:
+        object:
+          type: "string"
+          description: "This object used by request validation."
+          example: "squadRequest object."
+        field:
+          type: "string"
+          description: "Show field name with problem"
+          example: "squadRequest.name"
+        rejectedValue:
+          type: object
+          description: "StackTrace from object"
+          example: "printStackTrace"
+        message:
+          type: "string"
+          description: "Show business error"
+          example: "Squad name cannot be empty!"
+
+    DailyRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        createdAt:
+          type: string
+          pattern: "yyyy-MM-dd HH:mm:ss"
+          example: "2023-12-01 11:30:00"
+        squad:
+          $ref: "#/components/schemas/SquadRequest"
+        author:
+          $ref: "#/components/schemas/EmployeeRequest"
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/TaskRequest"
+        blockers:
+          type: array
+          items:
+            $ref: "#/components/schemas/BlockerRequest"
+
+    SquadRequest:
+      required:
+        - name
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        name:
+          type: "string"
+          example: "Development - IGUA"
+        description:
+          type: "string"
+          example: "Responsible for developing IGUA functionalities"
+        maxCapacity:
+          type: "integer"
+          format: "int32"
+          example: 5
+        isPublic:
+          type: "boolean"
+          example: true
+        members:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/EmployeeRequest"
+
+    SquadResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        name:
+          type: "string"
+          example: "Development - IGUA"
+        description:
+          type: "string"
+          example: "Responsible for developing IGUA functionalities"
+        maxCapacity:
+          type: "integer"
+          format: "int32"
+          example: 5
+        isPublic:
+          type: "boolean"
+          example: true
+        members:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/EmployeeRequest"
+
+    EmployeeRequest:
+      required:
+        - name
+        - username
+        - password
+        - email
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        name:
+          type: "string"
+          example: "john.doe"
+        username:
+          type: "string"
+          example: "john.doe"
+        password:
+          type: "string"
+          example: "xxxxx"
+          minLength: 5
+          maxLength: 20
+        email:
+          type: "string"
+          example: "john.doe@example.com"
+
+    EmployeeResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        username:
+          type: "string"
+          example: "john.doe"
+        password:
+          type: "string"
+          example: "xxxxx"
+        email:
+          type: "string"
+          example: "john.doe@example.com"
+
+    TaskRequest:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        title:
+          type: "string"
+          example: "Implementing Code Review"
+        description:
+          type: "string"
+          example: "Necessary to eliminate bugs"
+        status:
+          type: "string"
+          example: "PENDING"
+          enum:
+            - "PENDING"
+            - "IN_PROGRESS"
+            - "COMPLETED"
+        priority:
+          type: "string"
+          example: "HIGH"
+          enum:
+            - "HIGH"
+            - "MEDIUM"
+            - "LOW_PRIORITY"
+        dueDate:
+          type: "string"
+          pattern: "yyyy-MM-dd"
+          example: "2024-01-01"
+        notes:
+          type: "string"
+          example: "Senior <-> Senior | Senior -> Junior"
+        assignee:
+          $ref: "#/components/schemas/EmployeeRequest"
+
+    TaskResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        title:
+          type: "string"
+          example: "Implementing Code Review"
+        description:
+          type: "string"
+          example: "Necessary to eliminate bugs"
+        status:
+          type: "string"
+          example: "PENDING"
+          enum:
+            - "PENDING"
+            - "IN_PROGRESS"
+            - "COMPLETED"
+        priority:
+          type: "string"
+          example: "HIGH"
+          enum:
+            - "HIGH"
+            - "MEDIUM"
+            - "LOW_PRIORITY"
+        dueDate:
+          type: "string"
+          pattern: "yyyy-MM-dd"
+          example: "2024-01-01"
+        notes:
+          type: "string"
+          example: "Senior <-> Senior | Senior -> Junior"
+        assignee:
+          $ref: "#/components/schemas/EmployeeRequest"
+
+    DailyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        createdAt:
+          type: string
+          pattern: "yyyy-MM-dd HH:mm:ss"
+          example: "2023-12-01 11:30:00"
+        squad:
+          $ref: "#/components/schemas/SquadRequest"
+        author:
+          $ref: "#/components/schemas/EmployeeRequest"
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/TaskRequest"
+        blockers:
+          type: array
+          items:
+            $ref: "#/components/schemas/BlockerRequest"
+        responses:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/DailyResponse"
+
+    BlockerRequest:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        resolution:
+          type: "string"
+          example: "Tranning Lead Squad"
+        owner:
+          type: "string"
+          example: "john.doe@example.com"
+        timeEstimate:
+          type: "string"
+          pattern: "yyyy-MM-dd HH:mm:ss"
+          example: "2024-05-13 12:30:45"
+        labels:
+          type: "array"
+          items:
+            type: "string"
+            example: "code-review"
+        links:
+          type: "array"
+          items:
+            type: "string"
+            example: "#234455 - http://easy.com/project/234455"
+        impact:
+          type: "string"
+          example: "Flow time"
+        description:
+          type: "string"
+          example: "Necessary to eliminate bugs"
+        status:
+          type: "string"
+          example: "OPEN"
+          enum:
+            - "OPEN"
+            - "IN_PROGRESS"
+            - "RESOLVED"
+
+    BlockerResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          example: "67213b97-b0d2-4e47-8b67-9295f3731d3f"
+        resolution:
+          type: "string"
+          example: "Tranning Lead Squad"
+        owner:
+          type: "string"
+          example: "john.doe@example.com"
+        timeEstimate:
+          type: "string"
+          pattern: "yyyy-MM-dd HH:mm:ss"
+          example: "2024-05-13 12:30:45"
+        labels:
+          type: "array"
+          items:
+            type: "string"
+            example: "code-review"
+        links:
+          type: "array"
+          items:
+            type: "string"
+            example: "#234455 - http://easy.com/project/234455"
+        impact:
+          type: "string"
+          example: "Flow time"
+        description:
+          type: "string"
+          example: "Necessary to eliminate bugs"
+        status:
+          type: "string"
+          example: "OPEN"
+          enum:
+            - "OPEN"
+            - "IN_PROGRESS"
+            - "RESOLVED"
+
+tags:
+  - name: daily
+    description: Everything about Daily
+  - name: squad
+    description: Everything about Squad
+  - name: employee
+    description: Everything about Employee
+paths:
+  /api/v1/dailies:
+    post:
+      tags:
+        - daily
+      summary: "Create a new daily"
+      description: 'Method used to initialize a daily'
+      operationId: "createDaily"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyResponse'
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DailyRequest'
+
+  /api/v1/dailies/date/{dateTime}:
+    get:
+      tags:
+        - daily
+      summary: "api/v1/dailies/date/{dateTime}"
+      description: "Get dailies by Date and Time"
+      operationId: "findByDate"
+      parameters:
+        - name: "dateTime"
+          in: "path"
+          required: true
+          schema:
+            example: "2023-01-01 10:10:00"
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/DailyResponse'
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/v1/dailies/{squad}/{dateTime}:
+    get:
+      tags:
+        - daily
+      summary: "GET api/v1/dailies/{squad}/{dateTime}"
+      operationId: "findBySquadAndDate"
+      parameters:
+        - name: "squad"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "dateTime"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+
+  /api/v1/employees:
+    post:
+      tags:
+        - employee
+      summary: "api/v1/employees"
+      operationId: "createEmployee"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/employees/employee/{id}:
+    put:
+      tags:
+        - employee
+      summary: "api/v1/employees/{id}"
+      operationId: "update"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/employees/:
+    get:
+      tags:
+        - employee
+      summary: "api/v1/employees"
+      operationId: "findAll"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/employees/username/{username}:
+    get:
+      tags:
+        - employee
+      summary: "api/v1/employees/username/{username}"
+      operationId: "findByUsername"
+      parameters:
+        - name: "username"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/employees/{email}:
+    get:
+      tags:
+        - employee
+      summary: "api/v1/employees/{email}"
+      operationId: "findByEmail"
+      parameters:
+        - name: "email"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+
+  /api/v1/employees/all:
+    delete:
+      tags:
+        - employee
+      summary: "api/v1/employees/all"
+      description: "Delete all dailies"
+      operationId: "deleteAll"
+      responses:
+        "204":
+          description: "OK"
+
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+        "500":
+          description: "Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/v1/employees/email/{email}:
+    delete:
+      tags:
+        - employee
+      summary: "api/v1/dailies/email/{email}"
+      operationId: "deleteByEmail"
+      parameters:
+        - name: "email"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/employees/{id}:
+    delete:
+      tags:
+        - employee
+      summary: "api/v1/employees/{id}"
+      operationId: "deleteById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/employees/user/{username}:
+    delete:
+      tags:
+        - employee
+      summary: "api/v1/employees/user/{username}"
+      operationId: "deleteByUsername"
+      parameters:
+        - name: "username"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+
+
+  /api/v1/dailies/squad/{squad}:
+    get:
+      summary: "GET api/v1/dailies/squad/{squad}"
+      operationId: "findBySquad"
+      parameters:
+        - name: "squad"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+
+
+
+  /api/v1/squads:
+    post:
+      summary: "POST api/v1/squads"
+      operationId: "createSquad"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/squads/all:
+    delete:
+      summary: "DELETE api/v1/squads/all"
+      operationId: "deleteAll"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/squads/{id}:
+    put:
+      summary: "PUT api/v1/squads/{id}"
+      operationId: "update"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+    delete:
+      summary: "DELETE api/v1/squads/{id}"
+      operationId: "deleteById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/squads/{squadId}: { }

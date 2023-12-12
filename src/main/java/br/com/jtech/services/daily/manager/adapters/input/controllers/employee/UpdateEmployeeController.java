@@ -16,12 +16,12 @@ import static br.com.jtech.services.daily.manager.application.core.domains.emplo
 import static org.springframework.http.ResponseEntity.ok;
 
 @RequiredArgsConstructor
-@JtechRestController(value = "/api/v1/dailies/employees")
+@JtechRestController(value = "/api/v1/employees")
 public class UpdateEmployeeController {
 
     private final UpdateEmployeeInputGateway updateEmployeeInputGateway;
 
-    @PutMapping("/{id}")
+    @PutMapping("/employee/{id}")
     public ResponseEntity<EmployeeResponse> update(@PathVariable String id, @RequestBody @Valid EmployeeRequest request) {
         request.setId(id);
         var employee = updateEmployeeInputGateway.update(fromRequest(request));
