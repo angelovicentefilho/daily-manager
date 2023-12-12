@@ -23,9 +23,6 @@ public class DeleteSquadUseCase implements DeleteSquadInputGateway {
     public void deleteById(String id) {
         validateId(id);
         var squad = findSquadByIdOutputGateway.findById(GenId.newUuid(id));
-        if (squad == null) {
-            throw new SquadNotFoundException("Squad not found!");
-        }
         deleteSquadOuputGateway.deleteById(squad.getId());
     }
 
