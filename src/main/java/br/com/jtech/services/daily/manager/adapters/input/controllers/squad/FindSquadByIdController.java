@@ -19,7 +19,8 @@ public class FindSquadByIdController {
 
     @RequestMapping("/{squadId}")
     public ResponseEntity<SquadResponse> findById(@PathVariable String squadId) {
-        var squad = findSquadByIdInputGateway.findById(squadId);
-        return ResponseEntity.ok(fromDomain(squad));
+        return findSquadByIdInputGateway.findById(squadId)
+                .map(squad -> ResponseEntity.ok(fromDomain(squad)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

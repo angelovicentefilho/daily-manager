@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,8 +37,8 @@ class CreateSquadUseCaseTest {
                 .isPublic(true)
                 .build();
 
-        when(createSquadOutputGateway.create(squad)).thenReturn(squad);
-        var createdSquad = createSquadUseCase.create(squad);
+        when(createSquadOutputGateway.create(squad)).thenReturn(Optional.of(squad));
+        var createdSquad = createSquadUseCase.create(squad).get();
         assertEquals(squad, createdSquad);
         verify(createSquadOutputGateway).create(squad);
     }

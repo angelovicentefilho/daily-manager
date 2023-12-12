@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class FindSquadByIdUseCaseTest {
+class FindSquadByIdUseCaseTest {
 
     @Mock
     private FindSquadByIdOutputGateway findSquadByIdOutputGateway;
@@ -27,28 +28,32 @@ public class FindSquadByIdUseCaseTest {
     private FindSquadByIdUseCase findSquadByIdUseCase;
 
     private Squad squad;
-    private String validSquadId;
-    private String invalidSquadId;
 
     @BeforeEach
-    public void setUp() {
-        validSquadId = UUID.randomUUID().toString();
-        invalidSquadId = "invalid-id";
+    void setUp() {
         squad = Squad.builder().id(UUID.randomUUID()).build();
     }
 
     @Test
-    public void testFindByIdWhenValidSquadIdThenReturnSquad() {
-        when(findSquadByIdOutputGateway.findById(GenId.newUuid(validSquadId))).thenReturn(squad);
+    void testFindByIdWhenValidSquadIdThenReturnSquad() {
+        var validSquadId = UUID.randomUUID().toString();
+        when(findSquadByIdOutputGateway.findById(GenId.newUuid(validSquadId))).thenReturn(Optional.of(squad));
 
-        Squad result = findSquadByIdUseCase.findById(validSquadId);
+        Squad result = findSquadByIdUseCase.findById(validSquadId).get();
 
         verify(findSquadByIdOutputGateway, times(1)).findById(GenId.newUuid(validSquadId));
         assertEquals(squad, result);
     }
 
     @Test
-    public void testFindByIdWhenInvalidSquadIdThenThrowException() {
+    void testFindByIdWhenInvalidSquadIdThenThrowException() {
+        var invalidSquadId = "invalid-id";
         assertThrows(IllegalArgumentException.class, () -> findSquadByIdUseCase.findById(invalidSquadId));
+    }
+
+    @Test
+    void testFindByIdWhenNotFoundSquadIdThenThrowException() {
+        var squadId = UUID.randomUUID().toString();
+        assertThrows(SquadNotFoundException.class, () -> findSquadByIdUseCase.findById(squadId));
     }
 }

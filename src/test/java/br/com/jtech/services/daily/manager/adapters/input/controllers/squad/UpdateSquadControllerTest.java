@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.when;
@@ -42,7 +43,7 @@ public class UpdateSquadControllerTest {
                 .description("Squad 1 description")
                 .build();
 
-        when(updateSquadInputGateway.update(Mockito.any())).thenReturn(Squad.fromRequest(request));
+        when(updateSquadInputGateway.update(Mockito.any())).thenReturn(Optional.of(Squad.fromRequest(request)));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/squads/{id}", ID.toString())
                         .contentType(MediaType.APPLICATION_JSON)

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -43,7 +44,7 @@ public class FindSquadByIdControllerTest {
                 .maxCapacity(10)
                 .isPublic(true)
                 .build();
-        when(findSquadByIdInputGateway.findById(id)).thenReturn(squad);
+        when(findSquadByIdInputGateway.findById(id)).thenReturn(Optional.of(squad));
         mockMvc.perform(get("/api/v1/squads/{squadId}", id)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());

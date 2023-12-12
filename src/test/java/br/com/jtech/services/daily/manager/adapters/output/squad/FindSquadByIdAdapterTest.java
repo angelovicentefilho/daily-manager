@@ -26,7 +26,7 @@ class FindSquadByIdAdapterTest {
     private FindSquadByIdAdapter findSquadByIdAdapter;
 
     @Test
-    public void testFindSquadById() {
+    void testFindSquadById() {
         UUID id = UUID.randomUUID();
         String name = "Squad 1";
         var squadDocument = SquadDocument.builder()
@@ -35,7 +35,7 @@ class FindSquadByIdAdapterTest {
                 .build();
         when(repository.findById(id)).thenReturn(Optional.of(squadDocument));
 
-        Squad foundSquad = findSquadByIdAdapter.findById(id);
+        Squad foundSquad = findSquadByIdAdapter.findById(id).get();
         verify(repository, times(1)).findById(id);
 
         assertEquals(id, foundSquad.getId());

@@ -25,7 +25,7 @@ class FindAllSquadAdapterTest {
     private FindAllSquadAdapter findAllSquadAdapter;
 
     @Test
-    public void testFindAllSquads() {
+    void testFindAllSquads() {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
         String name1 = "Squad 1";
