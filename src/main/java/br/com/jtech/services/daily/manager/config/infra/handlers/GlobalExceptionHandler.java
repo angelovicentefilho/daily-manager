@@ -13,6 +13,7 @@ package br.com.jtech.services.daily.manager.config.infra.handlers;
 
 
 import br.com.jtech.services.daily.manager.application.core.exceptions.employee.EmployeeBadRequestException;
+import br.com.jtech.services.daily.manager.application.core.exceptions.squad.SquadNotFoundException;
 import br.com.jtech.services.daily.manager.config.infra.exceptions.ApiError;
 import br.com.jtech.services.daily.manager.config.infra.exceptions.ApiSubError;
 import br.com.jtech.services.daily.manager.config.infra.exceptions.ApiValidationError;
@@ -54,6 +55,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmployeeBadRequestException.class)
     public ResponseEntity<ApiError> handlerBadRequestByPassword(EmployeeBadRequestException exception) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST);
+        error.setMessage(exception.getMessage());
+        error.setTimestamp(LocalDateTime.now());
+        return buildResponseEntity(error);
+    }
+
+    @ExceptionHandler(SquadNotFoundException.class)
+    public ResponseEntity<ApiError> handlerBadRequestById(SquadNotFoundException exception) {
         ApiError error = new ApiError(HttpStatus.BAD_REQUEST);
         error.setMessage(exception.getMessage());
         error.setTimestamp(LocalDateTime.now());

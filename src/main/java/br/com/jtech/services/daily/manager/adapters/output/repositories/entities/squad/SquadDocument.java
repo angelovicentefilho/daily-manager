@@ -33,6 +33,13 @@ public class SquadDocument extends BaseDocument implements Serializable {
     private Boolean isPublic;
 
     public static SquadDocument fromDomain(Squad squad) {
-        return null;
+        return SquadDocument.builder()
+                .id(squad.getId())
+                .name(squad.getName())
+                .description(squad.getDescription())
+                .members(squad.getMembers())
+                .maxCapacity(squad.getMaxCapacity())
+                .isPublic(squad.getIsPublic())
+                .build();
     }
 }

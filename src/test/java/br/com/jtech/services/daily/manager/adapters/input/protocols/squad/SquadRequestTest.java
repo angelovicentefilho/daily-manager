@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SquadRequestTest {
+class SquadRequestTest {
 
     private static Validator validator;
 
@@ -22,7 +22,7 @@ public class SquadRequestTest {
     }
 
     @Test
-    public void testSquadRequestValidation() {
+    void testSquadRequestValidation() {
         SquadRequest squadRequest = SquadRequest.builder()
                 .id("1")
                 .name("")

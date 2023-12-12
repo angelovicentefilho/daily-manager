@@ -6,6 +6,8 @@ import br.com.jtech.services.daily.manager.application.ports.output.squad.Create
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CreateSquadAdapter implements CreateSquadOutputGateway {
@@ -13,8 +15,8 @@ public class CreateSquadAdapter implements CreateSquadOutputGateway {
     private final SquadRepository repository;
 
     @Override
-    public Squad create(Squad request) {
+    public Optional<Squad> create(Squad request) {
         var document = this.repository.save(request.toDocument());
-        return Squad.fromDocument(document);
+        return Optional.of(Squad.fromDocument(document));
     }
 }

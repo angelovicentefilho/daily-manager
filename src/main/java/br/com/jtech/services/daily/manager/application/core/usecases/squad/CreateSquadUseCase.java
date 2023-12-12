@@ -4,6 +4,8 @@ import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
 import br.com.jtech.services.daily.manager.application.ports.input.squad.CreateSquadInputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.squad.CreateSquadOutputGateway;
 
+import java.util.Optional;
+
 public class CreateSquadUseCase implements CreateSquadInputGateway {
 
     private final CreateSquadOutputGateway createSquadOutputGateway;
@@ -13,7 +15,7 @@ public class CreateSquadUseCase implements CreateSquadInputGateway {
     }
 
     @Override
-    public Squad create(Squad request) {
+    public Optional<Squad> create(Squad request) {
         return createSquadOutputGateway.create(request);
     }
 }

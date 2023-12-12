@@ -7,6 +7,7 @@ import br.com.jtech.services.daily.manager.application.ports.output.squad.FindSq
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static br.com.jtech.services.daily.manager.application.core.domains.squad.Squad.fromDocument;
@@ -18,8 +19,8 @@ public class FindSquadByIdAdapter implements FindSquadByIdOutputGateway {
     private final SquadRepository repository;
 
     @Override
-    public Squad findById(UUID squadId) {
+    public Optional<Squad> findById(UUID squadId) {
         var squadDocument = repository.findById(squadId).orElseThrow(() -> new SquadNotFoundException("Squad not found!"));
-        return fromDocument(squadDocument);
+        return Optional.of(fromDocument(squadDocument));
     }
 }

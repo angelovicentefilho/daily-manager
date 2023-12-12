@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class SquadResponseTest {
+class SquadResponseTest {
 
     private final UUID ID = UUID.randomUUID();
     private final UUID ID2 = UUID.randomUUID();
 
     @Test
-    public void testFromDomain() {
+    void testFromDomain() {
         Squad squad = Squad.builder()
                 .id(ID)
                 .name("Alpha Squad")
@@ -36,7 +36,7 @@ public class SquadResponseTest {
     }
 
     @Test
-    public void testFromDomains() {
+    void testFromDomains() {
         Squad squad1 = Squad.builder()
                 .id(ID)
                 .name("Alpha Squad")
