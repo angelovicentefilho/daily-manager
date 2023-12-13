@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,7 +39,7 @@ class DeleteSquadUseCaseTest {
 
     @Test
     void testDeleteByIdWhenSquadIsFoundThenDeleteSuccessfully() {
-        when(findSquadByIdOutputGateway.findById(any(UUID.class))).thenReturn(squad);
+        when(findSquadByIdOutputGateway.findById(any(UUID.class))).thenReturn(Optional.of(squad));
         deleteSquadUseCase.deleteById(squad.getId().toString());
         verify(deleteSquadOuputGateway).deleteById(squad.getId());
     }

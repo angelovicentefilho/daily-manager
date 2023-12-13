@@ -14,6 +14,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Import({MongoTestConfig.class})
@@ -29,7 +31,7 @@ public class DeleteSquadControllerTest {
 
     @Test
     public void testDeleteByIdWhenValidIdThenNoContent() throws Exception {
-        String id = "123";
+        String id = UUID.randomUUID().toString();
         Mockito.doNothing().when(deleteSquadInputGateway).deleteById(id);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/squads/{id}", id)

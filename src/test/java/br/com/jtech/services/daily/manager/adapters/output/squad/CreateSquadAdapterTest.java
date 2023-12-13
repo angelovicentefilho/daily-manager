@@ -26,7 +26,7 @@ class CreateSquadAdapterTest {
     private CreateSquadAdapter createSquadAdapter;
 
     @Test
-    public void testCreateSquad() {
+    void testCreateSquad() {
         var id = UUID.randomUUID();
         String name = "Squad 1";
         String description = "Squad 1 description";
@@ -51,7 +51,7 @@ class CreateSquadAdapterTest {
                 .build();
         when(repository.save(any(SquadDocument.class))).thenReturn(mockSquadDocument);
 
-        var createdSquad = createSquadAdapter.create(mockSquad);
+        var createdSquad = createSquadAdapter.create(mockSquad).get();
 
         verify(repository, times(1)).save(any(SquadDocument.class));
         assertEquals(id, createdSquad.getId());
