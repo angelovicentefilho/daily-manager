@@ -24,7 +24,7 @@ import static br.com.jtech.services.daily.manager.application.core.domains.daily
 import static java.util.Optional.of;
 
 /**
- * class ManagerAdapter
+ * class CreateDailyAdapter
  * <p>
  * user angelo.vicente@jtech.corp
  */

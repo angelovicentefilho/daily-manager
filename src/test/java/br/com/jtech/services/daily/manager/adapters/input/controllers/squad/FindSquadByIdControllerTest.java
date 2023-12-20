@@ -1,7 +1,7 @@
 package br.com.jtech.services.daily.manager.adapters.input.controllers.squad;
 
 import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
-import br.com.jtech.services.daily.manager.application.ports.output.squad.FindSquadByIdOutputGateway;
+import br.com.jtech.services.daily.manager.application.ports.input.squad.FindSquadByIdInputGateway;
 import br.com.jtech.services.daily.manager.config.infra.mongodb.MongoTestConfig;
 import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -29,23 +31,23 @@ public class FindSquadByIdControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private FindSquadByIdOutputGateway findSquadByIdOutputGateway;
+    private FindSquadByIdInputGateway findSquadByIdInputGateway;
 
     @Test
     public void testFindSquadByIdWhenSquadsExistThenOk() throws Exception {
-        var id = GenId.newUuid(GenId.newId());
+        var id = UUID.randomUUID().toString();
         var squad = Squad.builder()
-                .id(id)
+                .id(GenId.newUuid(id))
                 .name("Squad 1")
                 .description("Squad 1 description")
                 .members(List.of())
                 .maxCapacity(10)
                 .isPublic(true)
                 .build();
-        when(findSquadByIdOutputGateway.findById(id)).thenReturn(squad);
+        when(findSquadByIdInputGateway.findById(id)).thenReturn(Optional.of(squad));
         mockMvc.perform(get("/api/v1/squads/{squadId}", id)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
-        verify(findSquadByIdOutputGateway, times(1)).findById(id);
+        verify(findSquadByIdInputGateway, times(1)).findById(id);
     }
 }

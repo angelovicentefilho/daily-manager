@@ -6,6 +6,8 @@ import br.com.jtech.services.daily.manager.application.ports.output.squad.Update
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static br.com.jtech.services.daily.manager.application.core.domains.squad.Squad.fromDocument;
 
 @Service
@@ -15,7 +17,7 @@ public class UpdateSquadAdapter implements UpdateSquadOuputGateway {
     private final SquadRepository repository;
 
     @Override
-    public Squad update(Squad squad) {
-        return fromDocument(repository.save(squad.toDocument()));
+    public Optional<Squad> update(Squad squad) {
+        return Optional.of(fromDocument(repository.save(squad.toDocument())));
     }
 }

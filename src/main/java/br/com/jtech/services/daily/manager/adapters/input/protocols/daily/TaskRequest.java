@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaskRequest implements Serializable {
     private String id;
-    @NotEmpty(message = "Title task cannot be empty!")
+    @NotEmpty(message = "Title cannot be empty!")
     private String title;
     private String description;
     private String status;

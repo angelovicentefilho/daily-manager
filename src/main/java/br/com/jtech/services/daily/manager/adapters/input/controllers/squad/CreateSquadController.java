@@ -5,6 +5,7 @@ import br.com.jtech.services.daily.manager.adapters.input.protocols.squad.SquadR
 import br.com.jtech.services.daily.manager.application.ports.input.squad.CreateSquadInputGateway;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +25,9 @@ public class CreateSquadController {
 
     @PostMapping
     public ResponseEntity<SquadResponse> create(@RequestBody @Valid SquadRequest request) {
-        var domain = createSquadInputGateway.create(fromRequest(request));
-        return ResponseEntity.status(CREATED).body(fromDomain(domain));
+        return createSquadInputGateway.create(fromRequest(request))
+                .map(squad -> ResponseEntity.status(CREATED).body(fromDomain(squad)))
+                .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
     }
 
 }

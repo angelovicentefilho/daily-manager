@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,8 +36,8 @@ class UpdateSquadUseCaseTest {
                 .maxCapacity(10)
                 .isPublic(true)
                 .build();
-        when(updateSquadOutputGateway.update(squad)).thenReturn(squad);
-        var updatedSquad = updateSquadUseCase.update(squad);
+        when(updateSquadOutputGateway.update(squad)).thenReturn(Optional.of(squad));
+        var updatedSquad = updateSquadUseCase.update(squad).get();
         assertEquals(squad, updatedSquad);
         verify(updateSquadOutputGateway).update(squad);
     }

@@ -5,9 +5,10 @@ import br.com.jtech.services.daily.manager.adapters.output.repositories.entities
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
 import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CreateSquadAdapterTest {
 
     @Mock
@@ -26,7 +27,7 @@ class CreateSquadAdapterTest {
     private CreateSquadAdapter createSquadAdapter;
 
     @Test
-    public void testCreateSquad() {
+    void testCreateSquad() {
         var id = UUID.randomUUID();
         String name = "Squad 1";
         String description = "Squad 1 description";
@@ -51,7 +52,7 @@ class CreateSquadAdapterTest {
                 .build();
         when(repository.save(any(SquadDocument.class))).thenReturn(mockSquadDocument);
 
-        var createdSquad = createSquadAdapter.create(mockSquad);
+        var createdSquad = createSquadAdapter.create(mockSquad).get();
 
         verify(repository, times(1)).save(any(SquadDocument.class));
         assertEquals(id, createdSquad.getId());

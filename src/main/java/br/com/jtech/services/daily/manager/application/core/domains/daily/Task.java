@@ -3,6 +3,7 @@ package br.com.jtech.services.daily.manager.application.core.domains.daily;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.TaskRequest;
 import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.daily.TaskDocument;
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
+import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 

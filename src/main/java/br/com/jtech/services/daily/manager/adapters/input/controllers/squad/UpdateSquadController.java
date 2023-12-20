@@ -22,8 +22,8 @@ public class UpdateSquadController {
     @PutMapping("/{id}")
     public ResponseEntity<SquadResponse> update(@PathVariable String id, @RequestBody @Valid SquadRequest request) {
         request.setId(id);
-        var squad = updateSquadInputGateway.update(fromRequest(request));
-        return ok(fromDomain(squad));
+        return updateSquadInputGateway.update(fromRequest(request))
+                .map(squad -> ok(fromDomain(squad)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 }
