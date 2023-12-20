@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import static br.com.jtech.services.daily.manager.application.core.domains.daily.Daily.fromDocument;
 
 /**
- * class ManagerAdapter
+ * class CreateDailyAdapter
  * <p>
  * user angelo.vicente@jtech.corp
  */

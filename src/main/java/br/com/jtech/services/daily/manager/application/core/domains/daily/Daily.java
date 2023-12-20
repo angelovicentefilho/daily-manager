@@ -80,7 +80,7 @@ public class Daily {
                 .squad(Squad.fromRequest(request.getSquad()))
                 .author(Employee.fromRequest(request.getAuthor()))
                 .createdAt(request.getCreatedAt())
-                .tasks(Task.fromRequest(request.getTasks()))
+                .tasks(Task.fromRequests(request.getTasks()))
                 .blockers(Blocker.fromRequest(request.getBlockers()))
                 .build();
     }
