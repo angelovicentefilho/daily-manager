@@ -2,6 +2,7 @@ package br.com.jtech.services.daily.manager.adapters.input.protocols.daily;
 
 import br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaskRequest implements Serializable {
     private String id;
+    @NotBlank(message = "Title cannot be empty!")
     private String title;
     private String description;
     private String status;
