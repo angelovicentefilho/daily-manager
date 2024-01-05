@@ -17,6 +17,7 @@ import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyR
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyResponse;
 import br.com.jtech.services.daily.manager.application.ports.input.daily.CreateDailyInputGateway;
 import br.com.jtech.services.daily.manager.config.infra.utils.Https;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class CreateDailyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<DailyResponse> create(@RequestBody DailyRequest request) {
+    public ResponseEntity<DailyResponse> create(@RequestBody @Valid DailyRequest request) {
         return createDailyInputGateway.create(fromRequest(request))
                 .map(DailyResponse::fromDomain)
                 .map(Https::CREATED)
