@@ -21,9 +21,9 @@ import br.com.jtech.services.daily.manager.application.core.exceptions.employee.
 import br.com.jtech.services.daily.manager.application.core.exceptions.squad.SquadNotFoundException;
 import br.com.jtech.services.daily.manager.application.ports.input.daily.CreateDailyInputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.daily.CreateDailyOutputGateway;
-import br.com.jtech.services.daily.manager.application.ports.output.employee.FindEmployeeByEmailOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.employee.FindEmployeeByUsernameOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.squad.FindSquadByIdOutputGateway;
+import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
 
 import java.util.Optional;
 
@@ -46,18 +46,31 @@ public class CreateDailyUseCase implements CreateDailyInputGateway {
         var squad = getSquad(daily.getSquad());
         daily.setAuthor(employee);
         daily.setSquad(squad);
+        validateTasks(daily);
         return createDailyOutputGateway.create(daily);
     }
 
-    private Employee getEmployee(Employee author) {
-        if (author == null || author.getUsername() == null) {
+    private void validateTasks(Daily daily) {
+        if (daily.getTasks() != null && !daily.getTasks().isEmpty()) {
+            for (var task : daily.getTasks()) {
+                var assignee = getEmployee(task.getAssignee());
+                task.setAssignee(assignee);
+                if (task.getId() == null) {
+                    task.setId(GenId.newUuid());
+                }
+            }
+        }
+    }
+
+    private Employee getEmployee(Employee employee) {
+        if (employee == null || employee.getUsername() == null) {
             throw new EmployeeBadRequestException("Author is invalid!");
         }
-        var employee = findEmployeeByUsernameOutputGateway.findByUsername(author.getUsername());
-        if (employee.isEmpty()) {
+        var employeeFound = findEmployeeByUsernameOutputGateway.findByUsername(employee.getUsername());
+        if (employeeFound.isEmpty()) {
             throw new EmployeeNotFoundException("Author not found!");
         }
-        return employee.get();
+        return employeeFound.get();
     }
 
     private Squad getSquad(Squad squad) {

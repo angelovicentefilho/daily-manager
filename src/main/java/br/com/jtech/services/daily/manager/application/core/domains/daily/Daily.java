@@ -76,7 +76,7 @@ public class Daily {
         return Daily.builder()
                 .id(GenId.newUuid(request.getId()))
                 .squad(Squad.builder().id(UUID.fromString(request.getSquadId())).build())
-                .author(Employee.builder().email(request.getAuthorEmail()).build())
+                .author(Employee.builder().email(request.getAuthorUsername()).build())
                 .createdAt(request.getCreatedAt())
                 .tasks(Task.fromRequests(request.getTasks()))
                 .blockers(Blocker.fromRequests(request.getBlockers()))

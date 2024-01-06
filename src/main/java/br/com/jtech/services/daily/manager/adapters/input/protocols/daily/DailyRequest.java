@@ -41,7 +41,7 @@ public class DailyRequest implements Serializable {
     @NotBlank(message = "Squad cannot be null!")
     private String squadId;
     @NotBlank(message = "Author cannot be null!")
-    private String authorEmail;
+    private String authorUsername;
     private String summary;
     private LocalDateTime createdAt;
     private List<TaskRequest> tasks;
