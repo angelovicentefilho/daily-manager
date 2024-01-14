@@ -50,6 +50,9 @@ public class Task {
     }
 
     public static List<Task> fromRequests(List<TaskRequest> tasks) {
+        if (tasks == null) {
+            return List.of();
+        }
         return tasks.stream().map(Task::fromRequest).toList();
     }
 

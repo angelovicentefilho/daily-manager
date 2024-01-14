@@ -96,6 +96,9 @@ public class Blocker {
 
 
     public static List<Blocker> fromRequests(List<BlockerRequest> requests) {
+        if (requests == null) {
+            return List.of();
+        }
         return requests.stream().map(Blocker::fromRequest).toList();
     }
 

@@ -70,7 +70,9 @@ public class DailyResponse implements Serializable {
     }
 
     public static DailyResponse fromDomain(Daily daily) {
-        return null;
+        var response = new DailyResponse();
+        BeanUtils.copyProperties(daily, response);
+        return response;
     }
 
     public static DailyResponse fromDomains(List<Daily> dailies) {

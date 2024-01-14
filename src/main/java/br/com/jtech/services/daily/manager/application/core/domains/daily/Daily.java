@@ -73,13 +73,17 @@ public class Daily {
     }
 
     public static Daily fromRequest(DailyRequest request) {
-        return Daily.builder()
-                .id(GenId.newUuid(request.getId()))
+        var daily = Daily.builder()
                 .squad(Squad.builder().id(UUID.fromString(request.getSquadId())).build())
-                .author(Employee.builder().email(request.getAuthorUsername()).build())
+                .author(Employee.builder().username(request.getAuthorUsername()).build())
+                .summary(request.getSummary())
                 .createdAt(request.getCreatedAt())
                 .tasks(Task.fromRequests(request.getTasks()))
                 .blockers(Blocker.fromRequests(request.getBlockers()))
                 .build();
+        if (request.getId() != null) {
+            daily.setId(UUID.fromString(request.getId()));
+        }
+        return daily;
     }
 }
