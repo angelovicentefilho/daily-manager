@@ -38,9 +38,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DailyRequest implements Serializable {
     private String id;
-    @NotBlank(message = "Squad cannot be null!")
+    @NotBlank(message = "Squad cannot be empty!")
     private String squadId;
-    @NotBlank(message = "Author cannot be null!")
+    @NotBlank(message = "Author cannot be empty!")
     private String authorUsername;
     private String summary;
     private LocalDateTime createdAt;

@@ -1,12 +1,8 @@
 package br.com.jtech.services.daily.manager.adapters.input.controllers.daily;
 
-import br.com.jtech.services.daily.manager.adapters.input.controllers.squad.CreateSquadController;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyRequest;
-import br.com.jtech.services.daily.manager.adapters.input.protocols.squad.SquadRequest;
 import br.com.jtech.services.daily.manager.application.core.domains.daily.Daily;
-import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
 import br.com.jtech.services.daily.manager.application.ports.input.daily.CreateDailyInputGateway;
-import br.com.jtech.services.daily.manager.application.ports.input.squad.CreateSquadInputGateway;
 import br.com.jtech.services.daily.manager.config.infra.mongodb.MongoTestConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
