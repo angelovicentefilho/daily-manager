@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface EmployeeRepository extends MongoRepository<EmployeeDocument, UUID> {
-
+    
     Optional<EmployeeDocument> findByEmail(String email);
 
     Optional<EmployeeDocument> findByUsername(String username);
