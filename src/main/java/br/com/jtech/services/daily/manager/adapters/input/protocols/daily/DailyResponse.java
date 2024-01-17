@@ -42,6 +42,7 @@ import java.util.List;
 public class DailyResponse implements Serializable {
 
     private String id;
+    private String summary;
     private SquadResponse squad;
     private EmployeeResponse author;
     private LocalDateTime createdAt;
@@ -53,6 +54,9 @@ public class DailyResponse implements Serializable {
     public static DailyResponse of(Daily daily) {
         return DailyResponse.builder()
                 .id(daily.getId().toString())
+                .summary(daily.getSummary())
+                .squad(SquadResponse.fromDomain(daily.getSquad()))
+                .author(EmployeeResponse.fromDomain(daily.getAuthor()))
                 .build();
     }
 
@@ -70,7 +74,12 @@ public class DailyResponse implements Serializable {
     }
 
     public static DailyResponse fromDomain(Daily daily) {
-        return null;
+        var response = new DailyResponse();
+        BeanUtils.copyProperties(daily, response);
+        response.setId(daily.getId().toString());
+        response.setSquad(SquadResponse.fromDomain(daily.getSquad()));
+        response.setAuthor(EmployeeResponse.fromDomain(daily.getAuthor()));
+        return response;
     }
 
     public static DailyResponse fromDomains(List<Daily> dailies) {

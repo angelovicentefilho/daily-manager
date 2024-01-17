@@ -15,7 +15,7 @@ public class CreateSquadUseCase implements CreateSquadInputGateway {
     }
 
     @Override
-    public Optional<Squad> create(Squad request) {
-        return createSquadOutputGateway.create(request);
+    public Optional<Squad> create(Squad squad) {
+        return createSquadOutputGateway.create(squad);
     }
 }

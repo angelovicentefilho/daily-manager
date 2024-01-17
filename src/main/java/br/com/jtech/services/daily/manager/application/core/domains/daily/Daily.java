@@ -13,11 +13,7 @@
 package br.com.jtech.services.daily.manager.application.core.domains.daily;
 
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyRequest;
-import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.daily.BlockerDocument;
 import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.daily.DailyDocument;
-import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.daily.TaskDocument;
-import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.employee.EmployeeDocument;
-import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.squad.SquadDocument;
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
 import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
 import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
@@ -44,6 +40,7 @@ public class Daily {
     private UUID id;
     private Squad squad;
     private Employee author;
+    private String summary;
     private LocalDateTime createdAt;
     private List<Task> tasks;
     private List<Blocker> blockers;
@@ -55,6 +52,7 @@ public class Daily {
     public DailyDocument toDocument() {
         return DailyDocument.builder()
                 .id(getId())
+                .summary(getSummary())
                 .author(getAuthor().toDocument())
                 .squad(getSquad().toDocument())
                 .createdAt(getCreatedAt())
@@ -75,13 +73,15 @@ public class Daily {
     }
 
     public static Daily fromRequest(DailyRequest request) {
-        return Daily.builder()
-                .id(GenId.newUuid(request.getId()))
-                .squad(Squad.fromRequest(request.getSquad()))
-                .author(Employee.fromRequest(request.getAuthor()))
+        var daily = Daily.builder()
+                .squad(Squad.builder().id(UUID.fromString(request.getSquadId())).build())
+                .author(Employee.builder().username(request.getAuthorUsername()).build())
+                .summary(request.getSummary())
                 .createdAt(request.getCreatedAt())
                 .tasks(Task.fromRequests(request.getTasks()))
-                .blockers(Blocker.fromRequest(request.getBlockers()))
+                .blockers(Blocker.fromRequests(request.getBlockers()))
                 .build();
+        daily.setId(GenId.newUuid(request.getId()));
+        return daily;
     }
 }

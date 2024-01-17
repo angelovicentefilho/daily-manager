@@ -4,19 +4,17 @@ import br.com.jtech.services.daily.manager.adapters.output.repositories.SquadRep
 import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.squad.SquadDocument;
 import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Arrays;
-import java.util.List;
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class FindSquadByIdAdapterTest {
 
     @Mock

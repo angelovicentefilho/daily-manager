@@ -30,7 +30,9 @@ public class EmployeeResponse implements Serializable {
     public static EmployeeResponse fromDomain(Employee domain) {
         var response = new EmployeeResponse();
         BeanUtils.copyProperties(domain, response);
-        response.setId(domain.getId().toString());
+        if (domain.getId() != null) {
+            response.setId(domain.getId().toString());
+        }
         return response;
     }
 

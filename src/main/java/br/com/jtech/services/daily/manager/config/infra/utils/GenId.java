@@ -35,6 +35,10 @@ public class GenId {
         return (id != null && !id.isEmpty()) ? UUID.fromString(id) : UUID.randomUUID();
     }
 
+    public static UUID newUuid(UUID id) {
+        return (id != null) ? id : newUuid();
+    }
+
     public static UUID newUuid() {
         return UUID.randomUUID();
     }

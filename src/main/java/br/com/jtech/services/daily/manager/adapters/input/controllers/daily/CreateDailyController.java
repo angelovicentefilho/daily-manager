@@ -16,16 +16,14 @@ package br.com.jtech.services.daily.manager.adapters.input.controllers.daily;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyRequest;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyResponse;
 import br.com.jtech.services.daily.manager.application.ports.input.daily.CreateDailyInputGateway;
+import br.com.jtech.services.daily.manager.config.infra.utils.Https;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyResponse.fromDomain;
 import static br.com.jtech.services.daily.manager.application.core.domains.daily.Daily.fromRequest;
-import static org.springframework.http.HttpStatus.CREATED;
 
 
 @RestController
@@ -35,10 +33,12 @@ public class CreateDailyController {
 
     private final CreateDailyInputGateway createDailyInputGateway;
 
-    //TODO: Optional<Daily> is better!!!
     @PostMapping
-    public ResponseEntity<DailyResponse> create(@RequestBody DailyRequest request) {
-        var daily = fromDomain(createDailyInputGateway.create(fromRequest(request)));
-        return ResponseEntity.status(CREATED).body(daily);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<DailyResponse> create(@RequestBody @Valid DailyRequest request) {
+        return createDailyInputGateway.create(fromRequest(request))
+                .map(DailyResponse::fromDomain)
+                .map(Https::CREATED)
+                .orElse(ResponseEntity.badRequest().build());
     }
 }

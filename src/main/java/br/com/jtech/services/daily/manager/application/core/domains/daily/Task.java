@@ -29,35 +29,60 @@ public class Task {
     private String notes;
 
     public static List<Task> fromDocuments(List<TaskDocument> tasks) {
-        return null;
+        return tasks.stream().map(Task::fromDocument).toList();
     }
 
     public static Task fromRequest(TaskRequest request) {
-        UUID requestId = null;
-        if (request.getId() != null) {
-            requestId = GenId.newUuid(request.getId());
+        var task = new Task();
+        BeanUtils.copyProperties(request, task);
+        task.setPriority(PriorityTask.of(request.getPriority()));
+        task.setStatus(StatusTask.of(request.getStatus()));
+        return task;
+    }
+
+    public static Task fromDocument(TaskDocument document) {
+        var task = new Task();
+        BeanUtils.copyProperties(document, task);
+        task.setPriority(PriorityTask.of(document.getPriority()));
+        task.setStatus(StatusTask.of(document.getStatus()));
+        task.setAssignee(Employee.fromDocument(document.getAssignee()));
+        return task;
+    }
+
+    public static List<Task> fromRequests(List<TaskRequest> tasks) {
+        if (tasks == null) {
+            return List.of();
         }
-        Employee assignee = null;
-        if (request.getAssignee() != null) {
-            assignee = Employee.fromRequest(request.getAssignee());
-        }
-        return Task.builder()
-                .id(requestId)
-                .title(request.getTitle())
-                .description(request.getDescription())
-                .status(StatusTask.valueOf(request.getStatus()))
-                .priority(PriorityTask.valueOf(request.getPriority()))
-                .dueDate(request.getDueDate())
-                .assignee(assignee)
-                .notes(request.getNotes())
+        return tasks.stream().map(Task::fromRequest).toList();
+    }
+
+    public TaskDocument toDocument() {
+        return TaskDocument.builder()
+                .id(getId())
+                .assignee(getAssignee().toDocument())
+                .description(getDescription())
+                .dueDate(getDueDate())
+                .notes(getNotes())
+                .title(getTitle())
+                .status(getStatus().name())
+                .priority(getPriority().name())
                 .build();
     }
 
-    public static List<Task> fromRequests(List<TaskRequest> requests) {
-        return requests.stream().map(Task::fromRequest).toList();
+    public TaskDocument toDocument(Task task) {
+        return TaskDocument.builder()
+                .id(task.getId())
+                .assignee(task.getAssignee().toDocument())
+                .description(task.getDescription())
+                .dueDate(task.getDueDate())
+                .notes(task.getNotes())
+                .title(task.getTitle())
+                .status(task.getStatus().name())
+                .priority(task.getPriority().name())
+                .build();
     }
 
     public static List<TaskDocument> toDocuments(List<Task> tasks) {
-        return null;
+        return tasks.stream().map(Task::toDocument).toList();
     }
 }

@@ -26,5 +26,4 @@ public class UpdateSquadController {
                 .map(squad -> ok(fromDomain(squad)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 }

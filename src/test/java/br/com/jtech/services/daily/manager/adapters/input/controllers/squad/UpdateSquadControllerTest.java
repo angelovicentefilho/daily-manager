@@ -42,7 +42,6 @@ public class UpdateSquadControllerTest {
                 .name("Squad 1")
                 .description("Squad 1 description")
                 .build();
-
         when(updateSquadInputGateway.update(Mockito.any())).thenReturn(Optional.of(Squad.fromRequest(request)));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/squads/{id}", ID.toString())

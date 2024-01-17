@@ -6,7 +6,6 @@ import br.com.jtech.services.daily.manager.application.core.exceptions.squad.Squ
 import br.com.jtech.services.daily.manager.application.ports.output.squad.FindSquadByIdOutputGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.UUID;
 

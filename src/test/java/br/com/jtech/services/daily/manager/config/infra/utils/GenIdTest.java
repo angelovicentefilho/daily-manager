@@ -34,4 +34,11 @@ class GenIdTest {
         UUID uuid = GenId.newUuid(existingId);
         assertEquals(UUID.fromString(existingId), uuid);
     }
+
+    @Test
+    void testNewUuidWithExistingUuid() {
+        UUID existingUuid = UUID.fromString("123e4567-e89b-12d3-a456-556642440000");
+        UUID uuid = GenId.newUuid(existingUuid);
+        assertEquals(existingUuid, uuid);
+    }
 }

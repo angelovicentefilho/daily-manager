@@ -15,6 +15,8 @@ package br.com.jtech.services.daily.manager.adapters.input.protocols.daily;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeRequest;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.squad.SquadRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,8 +38,11 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DailyRequest implements Serializable {
     private String id;
-    private SquadRequest squad;
-    private EmployeeRequest author;
+    @NotBlank(message = "Squad cannot be empty!")
+    private String squadId;
+    @NotBlank(message = "Author cannot be empty!")
+    private String authorUsername;
+    private String summary;
     private LocalDateTime createdAt;
     private List<TaskRequest> tasks;
     private List<BlockerRequest> blockers;

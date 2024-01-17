@@ -1,0 +1,48 @@
+{
+  "id": "37e18936-709e-40b7-a17d-6932b181696c",
+  "squad": {
+    "name": "Squad 1",
+    "description": "Squad Description",
+    "members": [
+      {
+        "name": "John Doe",
+        "username": "john.doe",
+        "password": "xxxxxx",
+        "email": "john.due@example.com"
+      },
+      {
+        "name": "Angelo Vicente Filho",
+        "username": "angelo.vicente",
+        "password": "xxxxxx",
+        "email": "angelo.vicente@veolia.com"
+      }
+    ],
+    "maxCapacity": 5,
+    "isPublic": true
+  },
+  "summary": "This daily...",
+  "author": {
+    "name": "Angelo Vicente Filho",
+    "username": "angelo.vicente",
+    "password": "xxxxxx",
+    "email": "angelo.vicente@veolia.com"
+  },
+  "createdAt": "2023-12-12 11:30:00",
+  "tasks": [
+    {
+      "id": "358680b5-551e-4623-b41e-c1d3ca34a5b8",
+      "title": "CodeReview - Pull Request",
+      "description": "Verify bugs from develop code",
+      "status": "PENDING",
+      "priority": "HIGH",
+      "dueDate": "2023-12-12",
+      "assignee": {
+        "name": "Angelo Vicente Filho",
+        "username": "angelo.vicente",
+        "password": "xxxxxx",
+        "email": "angelo.vicente@veolia.com"
+      },
+      "notes": "Major priority"
+    }
+  ]
+}

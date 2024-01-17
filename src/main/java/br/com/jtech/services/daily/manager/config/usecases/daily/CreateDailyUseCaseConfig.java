@@ -13,6 +13,8 @@
 package br.com.jtech.services.daily.manager.config.usecases.daily;
 
 import br.com.jtech.services.daily.manager.adapters.output.daily.CreateDailyAdapter;
+import br.com.jtech.services.daily.manager.adapters.output.employee.FindEmployeeByUsernameAdapter;
+import br.com.jtech.services.daily.manager.adapters.output.squad.FindSquadByIdAdapter;
 import br.com.jtech.services.daily.manager.application.core.usecases.daily.CreateDailyUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +28,8 @@ import org.springframework.context.annotation.Configuration;
 public class CreateDailyUseCaseConfig {
 
     @Bean
-    public CreateDailyUseCase useCase(CreateDailyAdapter createManagerAdapter) {
-        return new CreateDailyUseCase(createManagerAdapter);
+    public CreateDailyUseCase useCase(CreateDailyAdapter createManagerAdapter, FindEmployeeByUsernameAdapter findEmployeeByUsernameAdapter, FindSquadByIdAdapter findSquadByIdAdapter) {
+        return new CreateDailyUseCase(createManagerAdapter, findEmployeeByUsernameAdapter, findSquadByIdAdapter);
      }
 
  }

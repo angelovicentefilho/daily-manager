@@ -43,6 +43,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class DailyDocument extends BaseDocument implements Serializable {
 
+    private String summary;
+
     @DBRef
     @Cascade
     private SquadDocument squad;
