@@ -81,9 +81,7 @@ public class Daily {
                 .tasks(Task.fromRequests(request.getTasks()))
                 .blockers(Blocker.fromRequests(request.getBlockers()))
                 .build();
-        if (request.getId() != null) {
-            daily.setId(UUID.fromString(request.getId()));
-        }
+        daily.setId(GenId.newUuid(request.getId()));
         return daily;
     }
 }

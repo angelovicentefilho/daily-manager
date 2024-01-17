@@ -25,7 +25,9 @@ import br.com.jtech.services.daily.manager.application.ports.output.employee.Fin
 import br.com.jtech.services.daily.manager.application.ports.output.squad.FindSquadByIdOutputGateway;
 import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CreateDailyUseCase implements CreateDailyInputGateway {
 
@@ -55,32 +57,24 @@ public class CreateDailyUseCase implements CreateDailyInputGateway {
             for (var task : daily.getTasks()) {
                 var assignee = getEmployee(task.getAssignee());
                 task.setAssignee(assignee);
-                if (task.getId() == null) {
-                    task.setId(GenId.newUuid());
-                }
+                task.setId(GenId.newUuid(task.getId()));
             }
         }
     }
 
     private Employee getEmployee(Employee employee) {
-        if (employee == null || employee.getUsername() == null) {
-            throw new EmployeeBadRequestException("Author is invalid!");
-        }
-        var employeeFound = findEmployeeByUsernameOutputGateway.findByUsername(employee.getUsername());
-        if (employeeFound.isEmpty()) {
-            throw new EmployeeNotFoundException("Author not found!");
-        }
-        return employeeFound.get();
+        Objects.requireNonNull(employee, "Employee is required!");
+        final String username = Optional.ofNullable(employee.getUsername())
+                .orElseThrow(() -> new EmployeeBadRequestException("Username is invalid!"));
+        return findEmployeeByUsernameOutputGateway.findByUsername(username)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!"));
     }
 
     private Squad getSquad(Squad squad) {
-        if (squad == null || squad.getId() == null) {
-            throw new IllegalArgumentException("Squad is invalid!");
-        }
-        var squadFound = findSquadByIdOutputGateway.findById(squad.getId());
-        if (squadFound.isEmpty()) {
-            throw new SquadNotFoundException("Squad not found!");
-        }
-        return squadFound.get();
+        Objects.requireNonNull(squad, "Squad is required!");
+        final UUID id = Optional.ofNullable(squad.getId())
+                .orElseThrow(() -> new SquadNotFoundException("Squad is invalid!"));
+        return findSquadByIdOutputGateway.findById(id)
+                .orElseThrow(() -> new SquadNotFoundException("Squad not found!"));
     }
 }
