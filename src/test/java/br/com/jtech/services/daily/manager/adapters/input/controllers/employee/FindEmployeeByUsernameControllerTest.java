@@ -34,7 +34,7 @@ public class FindEmployeeByUsernameControllerTest {
     public void testFindByUsernameWhenEmployeeExistsThenReturnEmployee() throws Exception {
         // Arrange
         String username = "johndoe";
-        Optional<Employee> employee = Optional.of(new Employee(UUID.randomUUID(), "John Doe", username, "password123", "john.doe@example.com"));
+        Optional<Employee> employee = Optional.of(new Employee(UUID.randomUUID(), "John Doe", username, "password123", "john.doe@example.com", null));
         when(findEmployeeByUsernameOutputGateway.findByUsername(username)).thenReturn(employee);
 
         // Act & Assert

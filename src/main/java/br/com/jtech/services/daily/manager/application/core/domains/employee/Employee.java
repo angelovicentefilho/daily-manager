@@ -2,12 +2,17 @@ package br.com.jtech.services.daily.manager.application.core.domains.employee;
 
 import br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeRequest;
 import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.employee.EmployeeDocument;
+import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.employee.Role;
 import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Getter
 @Setter
@@ -22,6 +27,7 @@ public class Employee {
     private String username;
     private String password;
     private String email;
+    private Set<Role> roles;
 
     public static List<Employee> fromDocuments(List<EmployeeDocument> documents) {
         return documents.stream().map(Employee::fromDocument).toList();
@@ -33,6 +39,7 @@ public class Employee {
                 .name(getName())
                 .username(getUsername())
                 .password(getPassword())
+                .roles(roles)
                 .email(getEmail())
                 .build();
     }
@@ -48,5 +55,9 @@ public class Employee {
         BeanUtils.copyProperties(request, employee);
         employee.setId(GenId.newUuid(request.getId()));
         return employee;
+    }
+
+    public boolean isNotRoles() {
+        return isNull(getRoles()) || roles.isEmpty();
     }
 }
