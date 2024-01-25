@@ -1,4 +1,9 @@
 spring:
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USER:username}
+    password: ${SMTP_PASS:password}
   application:
     name: daily-manager
     version: 1.0.0-SNAPSHOT
@@ -43,3 +48,4 @@ api:
   url:
     homologation: http://${HOMOLOGATION_SERVER:172.30.1.24}:${HOMOLOGATION_PORT:8081}
     production: ${PRODUCTION_URI:http://${spring.application.name}.jtech.com.br}
+
