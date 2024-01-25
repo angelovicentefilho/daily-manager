@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "api.version",
+      "type": "java.lang.String",
+      "description": "Swagger version number."
+    },
+    {
+      "name": "api.url.homologation",
+      "type": "java.lang.String",
+      "description": "Swagger combo for site UAT name."
+    },
+    {
+      "name": "api.url.production",
+      "type": "java.lang.String",
+      "description": "Swagger combo for PROD name."
+    },
+    {
+      "name": "spring.application.version",
+      "type": "java.lang.String",
+      "description": "Banner application version."
+    }
+  ] }
