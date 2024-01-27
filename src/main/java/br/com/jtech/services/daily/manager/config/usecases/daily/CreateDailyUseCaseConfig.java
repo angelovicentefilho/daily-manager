@@ -16,6 +16,7 @@ import br.com.jtech.services.daily.manager.adapters.output.daily.CreateDailyAdap
 import br.com.jtech.services.daily.manager.adapters.output.employee.FindEmployeeByUsernameAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.squad.FindSquadByIdAdapter;
 import br.com.jtech.services.daily.manager.application.core.usecases.daily.CreateDailyUseCase;
+import br.com.jtech.services.daily.manager.application.ports.output.daily.SendEmailOutputGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,8 +29,11 @@ import org.springframework.context.annotation.Configuration;
 public class CreateDailyUseCaseConfig {
 
     @Bean
-    public CreateDailyUseCase useCase(CreateDailyAdapter createManagerAdapter, FindEmployeeByUsernameAdapter findEmployeeByUsernameAdapter, FindSquadByIdAdapter findSquadByIdAdapter) {
-        return new CreateDailyUseCase(createManagerAdapter, findEmployeeByUsernameAdapter, findSquadByIdAdapter);
+    public CreateDailyUseCase useCase(CreateDailyAdapter createManagerAdapter,
+                                      FindEmployeeByUsernameAdapter findEmployeeByUsernameAdapter,
+                                      FindSquadByIdAdapter findSquadByIdAdapter,
+                                      SendEmailOutputGateway sendEmailOutputGateway) {
+        return new CreateDailyUseCase(createManagerAdapter, findEmployeeByUsernameAdapter, findSquadByIdAdapter, sendEmailOutputGateway);
      }
 
  }

@@ -23,7 +23,7 @@ public class SendEmailAdapter implements SendEmailOutputGateway {
             log.debug(">>> Sending email to: '{}'", email.getTo());
             var message = new SimpleMailMessage();
             message.setFrom(email.getFrom());
-            message.setTo(email.getTo());
+            message.setTo(email.getTo().split(";"));
             message.setSubject(email.getSubject());
             message.setText(email.getBody());
             javaMailSender.send(message);
