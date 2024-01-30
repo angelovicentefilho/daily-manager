@@ -37,13 +37,13 @@ class CreateDailyControllerTest {
 
     @Test
     public void testCreateDailyWhenValidRequestThenCreated() throws Exception {
-        final String validPayload = "{\"squadId\":\"" + ID.toString() + "\",\"authorUsername\":\"filipe\",\"summary\":\"Daily 1 description\"}";
-        final var request = DailyRequest.builder().squadId(ID.toString()).authorUsername("filipe").summary("Daily 1 description").build();
+        final String validPayload = "{\"squadId\":\"" + ID.toString() + "\",\"authorEmail\":\"filipe@test.com\",\"summary\":\"Daily 1 description\"}";
+        final var request = DailyRequest.builder().squadId(ID.toString()).authorEmail("filipe@test.com").summary("Daily 1 description").build();
         final var daily = Daily.fromRequest(request);
         Mockito.when(createDailyInputGateway.create(Mockito.argThat(actualDaily ->
                         actualDaily.getSquad().getId().equals(daily.getSquad().getId()) &&
                         actualDaily.getSummary().equals(daily.getSummary()) &&
-                        actualDaily.getAuthor().getUsername().equals(daily.getAuthor().getUsername())
+                        actualDaily.getAuthor().getEmail().equals(daily.getAuthor().getEmail())
         ))).thenReturn(Optional.of(daily));
         mockMvc.perform(post("/api/v1/dailies")
                         .contentType(MediaType.APPLICATION_JSON)

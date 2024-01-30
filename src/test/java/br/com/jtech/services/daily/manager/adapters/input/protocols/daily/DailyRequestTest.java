@@ -26,7 +26,7 @@ public class DailyRequestTest {
         DailyRequest request = DailyRequest.builder()
                 .id("1")
                 .squadId("")
-                .authorUsername("")
+                .authorEmail("")
                 .summary("123")
                 .build();
 
@@ -38,7 +38,7 @@ public class DailyRequestTest {
             String message = violation.getMessage();
             switch (propertyPath) {
                 case "squadId" -> assertEquals("Squad cannot be empty!", message);
-                case "authorUsername" -> assertEquals("Author cannot be empty!", message);
+                case "authorEmail" -> assertEquals("Author email cannot be empty!", message);
             }
         }
     }

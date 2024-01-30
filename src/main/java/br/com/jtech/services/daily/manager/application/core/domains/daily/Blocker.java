@@ -30,6 +30,9 @@ public class Blocker {
     private List<String> labels;
     private List<String> links;
 
+    public boolean isOpen() {
+        return StatusBlocker.OPEN.equals(status) || StatusBlocker.IN_PROGRESS.equals(status);
+    }
 
     public static List<Blocker> fromDocuments(List<BlockerDocument> blockers) {
         return blockers.stream().map(Blocker::fromDocument).toList();

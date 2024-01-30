@@ -40,8 +40,8 @@ public class DailyRequest implements Serializable {
     private String id;
     @NotBlank(message = "Squad cannot be empty!")
     private String squadId;
-    @NotBlank(message = "Author cannot be empty!")
-    private String authorUsername;
+    @NotBlank(message = "Author email cannot be empty!")
+    private String authorEmail;
     private String summary;
     private LocalDateTime createdAt;
     private List<TaskRequest> tasks;
