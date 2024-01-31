@@ -15,6 +15,7 @@ package br.com.jtech.services.daily.manager.adapters.input.protocols.daily;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.employee.EmployeeRequest;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.squad.SquadRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ public class DailyRequest implements Serializable {
     @NotBlank(message = "Squad cannot be empty!")
     private String squadId;
     @NotBlank(message = "Author email cannot be empty!")
+    @Email(message = "Author email is not valid!")
     private String authorEmail;
     private String summary;
     private LocalDateTime createdAt;

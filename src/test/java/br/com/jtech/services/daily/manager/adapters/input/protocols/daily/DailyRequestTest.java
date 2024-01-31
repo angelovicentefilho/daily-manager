@@ -42,4 +42,25 @@ public class DailyRequestTest {
             }
         }
     }
+
+    @Test
+    public void testDailyRequestValidationInvalidEmail() {
+        DailyRequest request = DailyRequest.builder()
+                .id("1")
+                .squadId("123")
+                .authorEmail("invalid-email")
+                .summary("123")
+                .build();
+
+        Set<ConstraintViolation<DailyRequest>> violations = validator.validate(request);
+
+        assertEquals(1, violations.size());
+        for (ConstraintViolation<DailyRequest> violation : violations) {
+            String propertyPath = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            switch (propertyPath) {
+                case "authorEmail" -> assertEquals("Author email is not valid!", message);
+            }
+        }
+    }
 }
