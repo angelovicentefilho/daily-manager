@@ -60,4 +60,13 @@ class CreateDailyControllerTest {
                         .content(invalidPayload))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void testCreateDailyWhenInvalidAuthorEmailRequestThenBadRequest() throws Exception {
+        final String invalidPayload = "{\"squadId\":\"" + ID.toString() + "\",\"authorEmail\":\"invalid-email\",\"summary\":\"Daily 1 description\"}";
+        mockMvc.perform(post("/api/v1/dailies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidPayload))
+                .andExpect(status().isBadRequest());
+    }
 }

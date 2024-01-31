@@ -41,7 +41,7 @@ public class EmployeeRequestTest {
                 case "name" -> assertEquals("Name cannot be empty!", message);
                 case "username" -> assertEquals("Username cannot be empty!", message);
                 case "password" -> assertEquals("Password min 5 and max 20 characters!", message);
-                case "email" -> assertEquals("must be a well-formed email address", message);
+                case "email" -> assertEquals("Email is not valid!", message);
             }
         }
     }

@@ -88,11 +88,15 @@ public class Daily {
 
     public static Daily fromCreateRequest(DailyCreateRequest request) {
         var daily = Daily.builder()
-                .squad(Squad.builder().id(UUID.fromString(request.getSquadId())).build())
-                .author(Employee.builder().email(request.getAuthorEmail()).build())
+                .squad(newSquad(request))
+                .author(Employee.newEmployee(request.getAuthorEmail()))
                 .summary(request.getSummary())
                 .build();
         daily.setId(GenId.newUuid());
         return daily;
+    }
+
+    private static Squad newSquad(DailyCreateRequest request) {
+        return Squad.builder().id(UUID.fromString(request.getSquadId())).build();
     }
 }

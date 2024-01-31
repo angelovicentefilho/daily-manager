@@ -27,7 +27,7 @@ public class EmployeeRequest implements Serializable {
     @Size(min = 5, max = 20, message = "Password min 5 and max 20 characters!")
     private String password;
     @NotBlank(message = "Email cannot be empty!")
-    @Email
+    @Email(message = "Email is not valid!")
     private String email;
 
     private List<EmployeeRequest> employees;

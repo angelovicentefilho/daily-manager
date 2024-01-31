@@ -23,6 +23,10 @@ public class Employee {
     private String password;
     private String email;
 
+    public static Employee newEmployee(final String email) {
+        return Employee.builder().email(email).build();
+    }
+
     public static List<Employee> fromDocuments(List<EmployeeDocument> documents) {
         return documents.stream().map(Employee::fromDocument).toList();
     }
