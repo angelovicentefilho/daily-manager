@@ -17,7 +17,6 @@ public class FinishDailyBySquadUseCase implements FinishDailyBySquadInputGateway
 
     @Override
     public Optional<Daily> finish(String squad) {
-        var daily = findDailyBySquadOutputGateway.findBySquad(squad);
         return Optional.empty();
     }
 }

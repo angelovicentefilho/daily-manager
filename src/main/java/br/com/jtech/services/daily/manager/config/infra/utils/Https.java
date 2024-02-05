@@ -11,6 +11,6 @@ public class Https {
     }
 
     public static <T> ResponseEntity<T> OK(T body) {
-        return new ResponseEntity<>(body, HttpStatus.CREATED);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 }

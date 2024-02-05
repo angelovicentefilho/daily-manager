@@ -52,6 +52,7 @@ public class DailyDocument extends BaseDocument implements Serializable {
     @Cascade
     private EmployeeDocument author;
     private LocalDateTime createAt;
+    private LocalDateTime finishedAt;
     @DBRef
     @Cascade
     @Singular
