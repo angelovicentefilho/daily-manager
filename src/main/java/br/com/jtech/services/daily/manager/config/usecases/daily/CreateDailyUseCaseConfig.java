@@ -16,11 +16,8 @@ import br.com.jtech.services.daily.manager.adapters.output.daily.CreateDailyAdap
 import br.com.jtech.services.daily.manager.adapters.output.daily.FindOpenBlockersBySquadAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.daily.FindOpenTasksBySquadAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.employee.FindEmployeeByEmailAdapter;
-import br.com.jtech.services.daily.manager.adapters.output.employee.FindEmployeeByUsernameAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.squad.FindSquadByIdAdapter;
 import br.com.jtech.services.daily.manager.application.core.usecases.daily.CreateDailyUseCase;
-import br.com.jtech.services.daily.manager.application.ports.output.daily.FindOpenTasksBySquadOutputGateway;
-import br.com.jtech.services.daily.manager.application.ports.output.daily.SendEmailOutputGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

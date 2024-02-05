@@ -46,6 +46,7 @@ public class DailyResponse implements Serializable {
     private SquadResponse squad;
     private EmployeeResponse author;
     private LocalDateTime createdAt;
+    private LocalDateTime finishedAt;
     private List<TaskResponse> tasks;
     private List<BlockerResponse> blockers;
 
@@ -55,6 +56,8 @@ public class DailyResponse implements Serializable {
         return DailyResponse.builder()
                 .id(daily.getId().toString())
                 .summary(daily.getSummary())
+                .createdAt(daily.getCreatedAt())
+                .finishedAt(daily.getFinishedAt())
                 .squad(SquadResponse.fromDomain(daily.getSquad()))
                 .author(EmployeeResponse.fromDomain(daily.getAuthor()))
                 .build();
