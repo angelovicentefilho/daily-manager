@@ -13,9 +13,13 @@
 package br.com.jtech.services.daily.manager.config.usecases.daily;
 
 import br.com.jtech.services.daily.manager.adapters.output.daily.CreateDailyAdapter;
+import br.com.jtech.services.daily.manager.adapters.output.daily.FindOpenBlockersBySquadAdapter;
+import br.com.jtech.services.daily.manager.adapters.output.daily.FindOpenTasksBySquadAdapter;
+import br.com.jtech.services.daily.manager.adapters.output.employee.FindEmployeeByEmailAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.employee.FindEmployeeByUsernameAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.squad.FindSquadByIdAdapter;
 import br.com.jtech.services.daily.manager.application.core.usecases.daily.CreateDailyUseCase;
+import br.com.jtech.services.daily.manager.application.ports.output.daily.FindOpenTasksBySquadOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.daily.SendEmailOutputGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,10 +34,10 @@ public class CreateDailyUseCaseConfig {
 
     @Bean
     public CreateDailyUseCase useCase(CreateDailyAdapter createManagerAdapter,
-                                      FindEmployeeByUsernameAdapter findEmployeeByUsernameAdapter,
+                                      FindEmployeeByEmailAdapter findEmployeeByEmailAdapter,
                                       FindSquadByIdAdapter findSquadByIdAdapter,
-                                      SendEmailOutputGateway sendEmailOutputGateway) {
-        return new CreateDailyUseCase(createManagerAdapter, findEmployeeByUsernameAdapter, findSquadByIdAdapter, sendEmailOutputGateway);
+                                      FindOpenTasksBySquadAdapter findOpenTasksBySquadAdapter,
+                                      FindOpenBlockersBySquadAdapter findOpenBlockersBySquadAdapter) {
+        return new CreateDailyUseCase(createManagerAdapter, findEmployeeByEmailAdapter, findSquadByIdAdapter, findOpenTasksBySquadAdapter, findOpenBlockersBySquadAdapter);
      }
-
  }

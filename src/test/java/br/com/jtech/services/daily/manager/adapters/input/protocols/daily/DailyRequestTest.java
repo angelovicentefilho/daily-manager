@@ -26,7 +26,7 @@ public class DailyRequestTest {
         DailyRequest request = DailyRequest.builder()
                 .id("1")
                 .squadId("")
-                .authorUsername("")
+                .authorEmail("")
                 .summary("123")
                 .build();
 
@@ -38,7 +38,28 @@ public class DailyRequestTest {
             String message = violation.getMessage();
             switch (propertyPath) {
                 case "squadId" -> assertEquals("Squad cannot be empty!", message);
-                case "authorUsername" -> assertEquals("Author cannot be empty!", message);
+                case "authorEmail" -> assertEquals("Author email cannot be empty!", message);
+            }
+        }
+    }
+
+    @Test
+    public void testDailyRequestValidationInvalidEmail() {
+        DailyRequest request = DailyRequest.builder()
+                .id("1")
+                .squadId("123")
+                .authorEmail("invalid-email")
+                .summary("123")
+                .build();
+
+        Set<ConstraintViolation<DailyRequest>> violations = validator.validate(request);
+
+        assertEquals(1, violations.size());
+        for (ConstraintViolation<DailyRequest> violation : violations) {
+            String propertyPath = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            switch (propertyPath) {
+                case "authorEmail" -> assertEquals("Author email is not valid!", message);
             }
         }
     }

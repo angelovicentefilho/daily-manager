@@ -37,13 +37,13 @@ class CreateDailyControllerTest {
 
     @Test
     public void testCreateDailyWhenValidRequestThenCreated() throws Exception {
-        final String validPayload = "{\"squadId\":\"" + ID.toString() + "\",\"authorUsername\":\"filipe\",\"summary\":\"Daily 1 description\"}";
-        final var request = DailyRequest.builder().squadId(ID.toString()).authorUsername("filipe").summary("Daily 1 description").build();
+        final String validPayload = "{\"squadId\":\"" + ID.toString() + "\",\"authorEmail\":\"filipe@test.com\",\"summary\":\"Daily 1 description\"}";
+        final var request = DailyRequest.builder().squadId(ID.toString()).authorEmail("filipe@test.com").summary("Daily 1 description").build();
         final var daily = Daily.fromRequest(request);
         Mockito.when(createDailyInputGateway.create(Mockito.argThat(actualDaily ->
                         actualDaily.getSquad().getId().equals(daily.getSquad().getId()) &&
                         actualDaily.getSummary().equals(daily.getSummary()) &&
-                        actualDaily.getAuthor().getUsername().equals(daily.getAuthor().getUsername())
+                        actualDaily.getAuthor().getEmail().equals(daily.getAuthor().getEmail())
         ))).thenReturn(Optional.of(daily));
         mockMvc.perform(post("/api/v1/dailies")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -55,6 +55,15 @@ class CreateDailyControllerTest {
     @Test
     public void testCreateDailyWhenInvalidRequestThenBadRequest() throws Exception {
         final String invalidPayload = "{\"squadId\":\"" + ID.toString() + "\",\"summary\":\"Daily 1 description\"}";
+        mockMvc.perform(post("/api/v1/dailies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidPayload))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCreateDailyWhenInvalidAuthorEmailRequestThenBadRequest() throws Exception {
+        final String invalidPayload = "{\"squadId\":\"" + ID.toString() + "\",\"authorEmail\":\"invalid-email\",\"summary\":\"Daily 1 description\"}";
         mockMvc.perform(post("/api/v1/dailies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidPayload))

@@ -28,6 +28,10 @@ public class Task {
     private Employee assignee;
     private String notes;
 
+    public boolean isOpen() {
+        return StatusTask.PENDING.equals(status) || StatusTask.IN_PROGRESS.equals(status);
+    }
+
     public static List<Task> fromDocuments(List<TaskDocument> tasks) {
         return tasks.stream().map(Task::fromDocument).toList();
     }

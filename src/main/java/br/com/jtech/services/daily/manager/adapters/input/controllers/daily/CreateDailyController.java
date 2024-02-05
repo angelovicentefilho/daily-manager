@@ -13,7 +13,7 @@
  */
 package br.com.jtech.services.daily.manager.adapters.input.controllers.daily;
 
-import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyRequest;
+import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyCreateRequest;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyResponse;
 import br.com.jtech.services.daily.manager.application.ports.input.daily.CreateDailyInputGateway;
 import br.com.jtech.services.daily.manager.config.infra.utils.Https;
@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static br.com.jtech.services.daily.manager.application.core.domains.daily.Daily.fromRequest;
+import static br.com.jtech.services.daily.manager.application.core.domains.daily.Daily.fromCreateRequest;
 
 
 @RestController
@@ -35,8 +35,8 @@ public class CreateDailyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<DailyResponse> create(@RequestBody @Valid DailyRequest request) {
-        return createDailyInputGateway.create(fromRequest(request))
+    public ResponseEntity<DailyResponse> create(@RequestBody @Valid DailyCreateRequest request) {
+        return createDailyInputGateway.create(fromCreateRequest(request))
                 .map(DailyResponse::fromDomain)
                 .map(Https::CREATED)
                 .orElse(ResponseEntity.badRequest().build());

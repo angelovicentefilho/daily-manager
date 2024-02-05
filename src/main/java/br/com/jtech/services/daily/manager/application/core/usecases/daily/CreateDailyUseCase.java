@@ -21,8 +21,8 @@ import br.com.jtech.services.daily.manager.application.core.exceptions.employee.
 import br.com.jtech.services.daily.manager.application.core.exceptions.employee.EmployeeNotFoundException;
 import br.com.jtech.services.daily.manager.application.core.exceptions.squad.SquadNotFoundException;
 import br.com.jtech.services.daily.manager.application.ports.input.daily.CreateDailyInputGateway;
-import br.com.jtech.services.daily.manager.application.ports.output.daily.CreateDailyOutputGateway;
-import br.com.jtech.services.daily.manager.application.ports.output.daily.SendEmailOutputGateway;
+import br.com.jtech.services.daily.manager.application.ports.output.daily.*;
+import br.com.jtech.services.daily.manager.application.ports.output.employee.FindEmployeeByEmailOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.employee.FindEmployeeByUsernameOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.squad.FindSquadByIdOutputGateway;
 import br.com.jtech.services.daily.manager.config.infra.utils.GenId;
@@ -33,24 +33,27 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CreateDailyUseCase implements CreateDailyInputGateway {
-
-    public static final String DAILY_CREATED = "Daily Created";
     private final CreateDailyOutputGateway createDailyOutputGateway;
 
-    private final FindEmployeeByUsernameOutputGateway findEmployeeByUsernameOutputGateway;
+    private final FindEmployeeByEmailOutputGateway findEmployeeByEmailOutputGateway;
 
     private final FindSquadByIdOutputGateway findSquadByIdOutputGateway;
 
-    private final SendEmailOutputGateway sendEmailOutputGateway;
+    private final FindOpenTasksBySquadOutputGateway findOpenTasksBySquadOutputGateway;
+
+    private final FindOpenBlockersBySquadOutputGateway findOpenBlockersBySquadOutputGateway;
 
     public CreateDailyUseCase(CreateDailyOutputGateway createDailyOutputGateway,
-                              FindEmployeeByUsernameOutputGateway findEmployeeByUsernameOutputGateway,
+                              FindEmployeeByEmailOutputGateway findEmployeeByEmailOutputGateway,
                               FindSquadByIdOutputGateway findSquadByIdOutputGateway,
-                              SendEmailOutputGateway sendEmailOutputGateway) {
+                              FindOpenTasksBySquadOutputGateway findOpenTasksBySquadOutputGateway,
+                              FindOpenBlockersBySquadOutputGateway findOpenBlockersBySquadOutputGateway) {
         this.createDailyOutputGateway = createDailyOutputGateway;
-        this.findEmployeeByUsernameOutputGateway = findEmployeeByUsernameOutputGateway;
+        this.findEmployeeByEmailOutputGateway = findEmployeeByEmailOutputGateway;
         this.findSquadByIdOutputGateway = findSquadByIdOutputGateway;
-        this.sendEmailOutputGateway = sendEmailOutputGateway;
+        this.findOpenTasksBySquadOutputGateway = findOpenTasksBySquadOutputGateway;
+        this.findOpenBlockersBySquadOutputGateway = findOpenBlockersBySquadOutputGateway;
+        ;
     }
 
     public Optional<Daily> create(Daily daily) {
@@ -58,41 +61,16 @@ public class CreateDailyUseCase implements CreateDailyInputGateway {
         var squad = getSquad(daily.getSquad());
         daily.setAuthor(employee);
         daily.setSquad(squad);
-        validateTasks(daily);
-        var dailyCreated = createDailyOutputGateway.create(daily);
-        if (dailyCreated.isPresent()) {
-            sendEmail(dailyCreated.get());
-        }
-        return dailyCreated;
-    }
-
-    private void sendEmail(final Daily daily) {
-        var emails = daily.getTasks()
-                .stream()
-                .map(task -> task.getAssignee().getEmail()).collect(Collectors.toSet());
-        emails.add(daily.getAuthor().getEmail());
-        final String body = daily.getTasks()
-                .stream()
-                .reduce("", (acc, task) -> acc + task.toString() + "\n", String::concat);
-        final Email email = Email.builder().to(String.join(";", emails)).subject(DAILY_CREATED).body(body).build();
-        sendEmailOutputGateway.send(email);
-    }
-
-    private void validateTasks(Daily daily) {
-        if (daily.getTasks() != null && !daily.getTasks().isEmpty()) {
-            for (var task : daily.getTasks()) {
-                var assignee = getEmployee(task.getAssignee());
-                task.setAssignee(assignee);
-                task.setId(GenId.newUuid(task.getId()));
-            }
-        }
+        daily.setTasks(findOpenTasksBySquadOutputGateway.findBySquad(squad.getName()));
+        daily.setBlockers(findOpenBlockersBySquadOutputGateway.findBySquad(squad.getName()));
+        return createDailyOutputGateway.create(daily);
     }
 
     private Employee getEmployee(Employee employee) {
         Objects.requireNonNull(employee, "Employee is required!");
-        final String username = Optional.ofNullable(employee.getUsername())
-                .orElseThrow(() -> new EmployeeBadRequestException("Username is invalid!"));
-        return findEmployeeByUsernameOutputGateway.findByUsername(username)
+        final String email = Optional.ofNullable(employee.getEmail())
+                .orElseThrow(() -> new EmployeeBadRequestException("Email is invalid!"));
+        return findEmployeeByEmailOutputGateway.findByEmail(email)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!"));
     }
 

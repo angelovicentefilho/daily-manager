@@ -12,6 +12,7 @@
  */
 package br.com.jtech.services.daily.manager.application.core.domains.daily;
 
+import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyCreateRequest;
 import br.com.jtech.services.daily.manager.adapters.input.protocols.daily.DailyRequest;
 import br.com.jtech.services.daily.manager.adapters.output.repositories.entities.daily.DailyDocument;
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
@@ -75,7 +76,7 @@ public class Daily {
     public static Daily fromRequest(DailyRequest request) {
         var daily = Daily.builder()
                 .squad(Squad.builder().id(UUID.fromString(request.getSquadId())).build())
-                .author(Employee.builder().username(request.getAuthorUsername()).build())
+                .author(Employee.builder().email(request.getAuthorEmail()).build())
                 .summary(request.getSummary())
                 .createdAt(request.getCreatedAt())
                 .tasks(Task.fromRequests(request.getTasks()))
@@ -83,5 +84,19 @@ public class Daily {
                 .build();
         daily.setId(GenId.newUuid(request.getId()));
         return daily;
+    }
+
+    public static Daily fromCreateRequest(DailyCreateRequest request) {
+        var daily = Daily.builder()
+                .squad(newSquad(request))
+                .author(Employee.newEmployee(request.getAuthorEmail()))
+                .summary(request.getSummary())
+                .build();
+        daily.setId(GenId.newUuid());
+        return daily;
+    }
+
+    private static Squad newSquad(DailyCreateRequest request) {
+        return Squad.builder().id(UUID.fromString(request.getSquadId())).build();
     }
 }
