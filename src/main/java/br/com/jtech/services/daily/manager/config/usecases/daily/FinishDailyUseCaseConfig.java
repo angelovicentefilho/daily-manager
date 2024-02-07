@@ -1,5 +1,6 @@
 package br.com.jtech.services.daily.manager.config.usecases.daily;
 
+import br.com.jtech.services.daily.manager.adapters.output.daily.CheckOpenDailyExistenceAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.daily.FinishDailyAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.daily.SendEmailAdapter;
 import br.com.jtech.services.daily.manager.adapters.output.employee.FindEmployeeByEmailAdapter;
@@ -15,7 +16,8 @@ public class FinishDailyUseCaseConfig {
     public FinishDailyUseCase useCase(FinishDailyAdapter finishDailyAdapter,
                                       FindEmployeeByEmailAdapter findEmployeeByEmailAdapter,
                                       FindSquadByIdAdapter findSquadByIdAdapter,
+                                      CheckOpenDailyExistenceAdapter checkOpenDailyExistenceAdapter,
                                       SendEmailAdapter sendEmailAdapter) {
-        return new FinishDailyUseCase(finishDailyAdapter, findEmployeeByEmailAdapter, findSquadByIdAdapter, sendEmailAdapter);
+        return new FinishDailyUseCase(finishDailyAdapter, findEmployeeByEmailAdapter, findSquadByIdAdapter, checkOpenDailyExistenceAdapter, sendEmailAdapter);
     }
 }

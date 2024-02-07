@@ -4,9 +4,11 @@ import br.com.jtech.services.daily.manager.application.core.domains.daily.Daily;
 import br.com.jtech.services.daily.manager.application.core.domains.daily.Task;
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
 import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
+import br.com.jtech.services.daily.manager.application.core.exceptions.daily.DailyNotFoundException;
 import br.com.jtech.services.daily.manager.application.core.exceptions.employee.EmployeeBadRequestException;
 import br.com.jtech.services.daily.manager.application.core.exceptions.employee.EmployeeNotFoundException;
 import br.com.jtech.services.daily.manager.application.core.exceptions.squad.SquadNotFoundException;
+import br.com.jtech.services.daily.manager.application.ports.output.daily.CheckOpenDailyExistenceOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.daily.FinishDailyOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.daily.SendEmailOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.employee.FindEmployeeByEmailOutputGateway;
@@ -43,6 +45,9 @@ class FinishDailyUseCaseTest {
     private FindSquadByIdOutputGateway findSquadByIdOutputGateway;
 
     @Mock
+    private CheckOpenDailyExistenceOutputGateway checkOpenDailyExistenceOutputGateway;
+
+    @Mock
     private SendEmailOutputGateway sendEmailOutputGateway;
 
     private Employee validEmployee;
@@ -55,19 +60,23 @@ class FinishDailyUseCaseTest {
                 finishDailyOutputGateway,
                 findEmployeeByEmailOutputGateway,
                 findSquadByIdOutputGateway,
+                checkOpenDailyExistenceOutputGateway,
                 sendEmailOutputGateway
         );
         validEmployee = Employee.builder().email("test@test.com").build();
         validSquad = Squad.builder().id(GenId.newUuid()).build();
+        when(checkOpenDailyExistenceOutputGateway.exists(any())).thenReturn(true);
     }
 
     @Test
     public void testFinishWithValidDaily() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(validEmployee);
-        daily.setSquad(Squad.builder().id(GenId.newUuid()).build());
-        daily.setTasks(Arrays.asList(Task.builder().id(GenId.newUuid()).assignee(validEmployee).build()));
+        final var daily = Daily.builder()
+                .author(validEmployee)
+                .id(GenId.newUuid())
+                .squad(validSquad)
+                .tasks(Arrays.asList(Task.builder().id(GenId.newUuid()).assignee(validEmployee).build()))
+                .build();
 
         when(findEmployeeByEmailOutputGateway.findByEmail(anyString())).thenReturn(Optional.of(new Employee()));
         when(findSquadByIdOutputGateway.findById(any())).thenReturn(Optional.of(new Squad()));
@@ -80,44 +89,54 @@ class FinishDailyUseCaseTest {
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(daily);
         verify(sendEmailOutputGateway, times(1)).send(any());
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
+    }
+
+
+    @Test
+    public void testFinishWithInvalidDailyId() {
+        // Arrange
+        final var daily = Daily.builder().id(GenId.newUuid()).squad(validSquad).tasks(new ArrayList<>()).build();
+        when(checkOpenDailyExistenceOutputGateway.exists(any())).thenReturn(false);
+
+        // Act & Assert
+        assertThatThrownBy(() -> finishDailyUseCase.finish(daily))
+                .isInstanceOf(DailyNotFoundException.class)
+                .hasMessage("Daily not found!");
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
+        verifyNoInteractions(findEmployeeByEmailOutputGateway, findSquadByIdOutputGateway, finishDailyOutputGateway, sendEmailOutputGateway);
     }
 
     @Test
     public void testFinishWithNullAuthor() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(null);
-        daily.setSquad(new Squad());
-        daily.setTasks(new ArrayList<>());
+        final var daily = Daily.builder().id(GenId.newUuid()).squad(validSquad).tasks(new ArrayList<>()).build();
 
         // Act & Assert
         assertThatThrownBy(() -> finishDailyUseCase.finish(daily))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Employee is required!");
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
         verifyNoInteractions(findEmployeeByEmailOutputGateway, findSquadByIdOutputGateway, finishDailyOutputGateway, sendEmailOutputGateway);
     }
 
     @Test
     public void testFinishWithInvalidAuthorEmail() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(new Employee());
-        daily.setSquad(validSquad);
+        final var daily = Daily.builder().id(GenId.newUuid()).squad(validSquad).tasks(new ArrayList<>()).author(new Employee()).build();
 
         // Act & Assert
         assertThatThrownBy(() -> finishDailyUseCase.finish(daily))
                 .isInstanceOf(EmployeeBadRequestException.class)
                 .hasMessage("Email is invalid!");
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
         verifyNoInteractions(findSquadByIdOutputGateway, finishDailyOutputGateway, sendEmailOutputGateway);
     }
 
     @Test
     public void testFinishWithNullSquad() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(validEmployee);
-        daily.setSquad(null);
-        daily.setTasks(new ArrayList<>());
+        final var daily = Daily.builder().id(GenId.newUuid()).author(validEmployee).tasks(new ArrayList<>()).build();
 
         when(findEmployeeByEmailOutputGateway.findByEmail(anyString())).thenReturn(Optional.of(new Employee()));
 
@@ -127,15 +146,13 @@ class FinishDailyUseCaseTest {
                 .hasMessage("Squad is required!");
         verifyNoInteractions(findSquadByIdOutputGateway, finishDailyOutputGateway, sendEmailOutputGateway);
         verify(findEmployeeByEmailOutputGateway, times(1)).findByEmail(anyString());
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
     }
 
     @Test
     public void testFinishWithInvalidSquadId() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(validEmployee);
-        daily.setSquad(new Squad());
-        daily.setTasks(new ArrayList<>());
+        final var daily = Daily.builder().id(GenId.newUuid()).squad(new Squad()).author(validEmployee).tasks(new ArrayList<>()).build();
 
         when(findEmployeeByEmailOutputGateway.findByEmail(anyString())).thenReturn(Optional.of(new Employee()));
 
@@ -144,16 +161,14 @@ class FinishDailyUseCaseTest {
                 .isInstanceOf(SquadNotFoundException.class)
                 .hasMessage("Squad is invalid!");
         verify(findEmployeeByEmailOutputGateway, times(1)).findByEmail(anyString());
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
         verifyNoInteractions(finishDailyOutputGateway, sendEmailOutputGateway);
     }
 
     @Test
     public void testFinishWithNullTasks() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(validEmployee);
-        daily.setSquad(validSquad);
-        daily.setTasks(null);
+        final var daily = Daily.builder().id(GenId.newUuid()).author(validEmployee).squad(validSquad).tasks(null).build();
 
         when(findEmployeeByEmailOutputGateway.findByEmail(anyString())).thenReturn(Optional.of(new Employee()));
         when(findSquadByIdOutputGateway.findById(any())).thenReturn(Optional.of(new Squad()));
@@ -168,15 +183,13 @@ class FinishDailyUseCaseTest {
         verify(sendEmailOutputGateway, never()).send(any());
         verify(findEmployeeByEmailOutputGateway, times(1)).findByEmail(anyString());
         verify(findSquadByIdOutputGateway, times(1)).findById(any());
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
     }
 
     @Test
     public void testFinishWithEmptyTasks() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(validEmployee);
-        daily.setSquad(validSquad);
-        daily.setTasks(new ArrayList<>());
+        final var daily = Daily.builder().id(GenId.newUuid()).squad(validSquad).author(validEmployee).tasks(new ArrayList<>()).build();
 
         when(findEmployeeByEmailOutputGateway.findByEmail(anyString())).thenReturn(Optional.of(new Employee()));
         when(findSquadByIdOutputGateway.findById(any())).thenReturn(Optional.of(new Squad()));
@@ -191,16 +204,13 @@ class FinishDailyUseCaseTest {
         verify(sendEmailOutputGateway, never()).send(any());
         verify(findEmployeeByEmailOutputGateway, times(1)).findByEmail(anyString());
         verify(findSquadByIdOutputGateway, times(1)).findById(any());
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
     }
 
     @Test
     public void testFinishWithValidTasks() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(validEmployee);
-        daily.setSquad(validSquad);
-
-        daily.setTasks(createTasks(validEmployee));
+        final var daily = Daily.builder().id(GenId.newUuid()).squad(validSquad).author(validEmployee).tasks(createTasks(validEmployee)).build();
 
         when(findEmployeeByEmailOutputGateway.findByEmail(anyString())).thenReturn(Optional.of(new Employee()));
         when(findSquadByIdOutputGateway.findById(any())).thenReturn(Optional.of(new Squad()));
@@ -215,16 +225,18 @@ class FinishDailyUseCaseTest {
         verify(sendEmailOutputGateway, times(2)).send(any());
         verify(findEmployeeByEmailOutputGateway, times(3)).findByEmail(anyString());
         verify(findSquadByIdOutputGateway, times(1)).findById(any());
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
     }
 
     @Test
     public void testFinishWithInvalidTaskAssigneeEmail() {
         // Arrange
-        Daily daily = new Daily();
-        daily.setAuthor(validEmployee);
-        daily.setSquad(validSquad);
-
-        daily.setTasks(createTasks(new Employee()));
+        final var daily = Daily.builder()
+                .id(GenId.newUuid())
+                .squad(validSquad)
+                .author(validEmployee)
+                .tasks(createTasks(new Employee()))
+                .build();
 
         when(findEmployeeByEmailOutputGateway.findByEmail(anyString())).thenReturn(Optional.empty());
 
@@ -233,6 +245,7 @@ class FinishDailyUseCaseTest {
                 .isInstanceOf(EmployeeNotFoundException.class)
                 .hasMessage("Employee not found!");
         verify(findEmployeeByEmailOutputGateway, times(1)).findByEmail(anyString());
+        verify(checkOpenDailyExistenceOutputGateway, times(1)).exists(any());
         verifyNoInteractions(findSquadByIdOutputGateway, finishDailyOutputGateway, sendEmailOutputGateway);
     }
 

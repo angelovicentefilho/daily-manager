@@ -36,4 +36,6 @@ public interface DailyRepository extends MongoRepository<DailyDocument, UUID> {
     Optional<DailyDocument> findBySquad_NameAndCreatedAt(String squad, LocalDateTime createdAt);
 
     Optional<DailyDocument> findTopBySquad_NameOrderByCreateAtDesc(String squadName);
+
+    boolean existsByIdAndFinishedAtIsNull(UUID id);
 }

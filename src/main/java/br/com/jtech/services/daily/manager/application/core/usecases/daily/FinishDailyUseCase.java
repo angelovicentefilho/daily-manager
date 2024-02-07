@@ -17,10 +17,12 @@ import br.com.jtech.services.daily.manager.application.core.domains.daily.Daily;
 import br.com.jtech.services.daily.manager.application.core.domains.daily.Email;
 import br.com.jtech.services.daily.manager.application.core.domains.employee.Employee;
 import br.com.jtech.services.daily.manager.application.core.domains.squad.Squad;
+import br.com.jtech.services.daily.manager.application.core.exceptions.daily.DailyNotFoundException;
 import br.com.jtech.services.daily.manager.application.core.exceptions.employee.EmployeeBadRequestException;
 import br.com.jtech.services.daily.manager.application.core.exceptions.employee.EmployeeNotFoundException;
 import br.com.jtech.services.daily.manager.application.core.exceptions.squad.SquadNotFoundException;
 import br.com.jtech.services.daily.manager.application.ports.input.daily.FinishDailyInputGateway;
+import br.com.jtech.services.daily.manager.application.ports.output.daily.CheckOpenDailyExistenceOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.daily.FinishDailyOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.daily.SendEmailOutputGateway;
 import br.com.jtech.services.daily.manager.application.ports.output.employee.FindEmployeeByEmailOutputGateway;
@@ -43,20 +45,27 @@ public class FinishDailyUseCase implements FinishDailyInputGateway {
 
     private final FindSquadByIdOutputGateway findSquadByIdOutputGateway;
 
+    private final CheckOpenDailyExistenceOutputGateway checkOpenDailyExistenceOutputGateway;
+
     private final SendEmailOutputGateway sendEmailOutputGateway;
 
     public FinishDailyUseCase(FinishDailyOutputGateway finishDailyOutputGateway,
                               FindEmployeeByEmailOutputGateway findEmployeeByEmailOutputGateway,
                               FindSquadByIdOutputGateway findSquadByIdOutputGateway,
+                              CheckOpenDailyExistenceOutputGateway checkOpenDailyExistenceOutputGateway,
                               SendEmailOutputGateway sendEmailOutputGateway) {
         this.finishDailyOutputGateway = finishDailyOutputGateway;
         this.findEmployeeByEmailOutputGateway = findEmployeeByEmailOutputGateway;
         this.findSquadByIdOutputGateway = findSquadByIdOutputGateway;
+        this.checkOpenDailyExistenceOutputGateway = checkOpenDailyExistenceOutputGateway;
         this.sendEmailOutputGateway = sendEmailOutputGateway;
     }
 
     @Override
     public Optional<Daily> finish(Daily daily) {
+        if (!checkOpenDailyExistenceOutputGateway.exists(daily.getId())) {
+            throw new DailyNotFoundException("Daily not found!");
+        }
         final var employee = getEmployee(daily.getAuthor());
         final var squad = getSquad(daily.getSquad());
         daily.setAuthor(employee);
