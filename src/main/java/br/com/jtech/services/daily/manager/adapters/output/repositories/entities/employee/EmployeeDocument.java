@@ -7,6 +7,7 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,4 +23,5 @@ public class EmployeeDocument extends BaseDocument implements Serializable {
     private String username;
     private String password;
     private String email;
+    private Set<Role> roles;
 }

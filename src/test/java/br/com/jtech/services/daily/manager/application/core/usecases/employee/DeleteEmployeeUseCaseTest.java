@@ -39,7 +39,7 @@ class DeleteEmployeeUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        employee = new Employee(UUID.randomUUID(), "John Doe", "johndoe", "password", "john.doe@example.com");
+        employee = new Employee(UUID.randomUUID(), "John Doe", "johndoe", "password", "john.doe@example.com", null);
     }
 
     @Test

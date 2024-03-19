@@ -9,16 +9,18 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/dailies")
+@RequestMapping("/api/v1/employees")
 @RequiredArgsConstructor
 public class CreateEmployeeController {
 
     private final CreateEmployeeInputGateway createEmployeeInputGateway;
 
-    @PostMapping("/employee")
+
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<EmployeeResponse> create(@RequestBody @Valid EmployeeRequest request) {
         return createEmployeeInputGateway.create(Employee.fromRequest(request))

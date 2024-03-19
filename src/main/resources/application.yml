@@ -31,7 +31,8 @@ logging:
   level:
     root: info
     org.springframework.web: info
-    br.com.jtech.services.daily.manager: debug
+    br.com.jtech.services: info
+    org.springframework.security: error
   file:
     name: ./logs/${spring.application.name}.log
 springdoc:
